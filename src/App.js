@@ -11,24 +11,28 @@ function App() {
 
   const formSubmit = (e) => {
     e.preventDefault();
+    
     let newItems = [...state.items, {
       username: state.username, 
       email: state.email
     }]
 
     setState({
-      newItems,
+      items: newItems,
       username: '',
       email: ''
     });
+
+    
   };
 
   const inputChange = (e) => {
-    let { name, value } = e.target
-
-    setState({
-    [name]: value
-    })
+    let { name, value } = e.target;
+    setState(prevState => ({
+      ...prevState,
+      [name]: value 
+    }));
+    
   };
 
     return (
