@@ -68,7 +68,9 @@ function App() {
       return itemIndex !== index
     });
     setState({
-      items: reducedItems
+      items: reducedItems,
+      username: '',
+      email: ''
     })
 	}
 
