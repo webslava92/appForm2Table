@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 
-function App(input, setInput) {
+function App() {
+  const [input, setInput] = useState({
+    items: [],
+    username: "",
+    email: "",
+  });
+  const [editData, setEditData] = useState({});
+  const [editStatus, setEditStatus] = useState(false);
+
   const removeUserData = (id) => {
     const reducedItems = input.items.filter((item, itemId) => {
       return itemId !== id;
     });
     setInput({
       items: reducedItems,
-      id: id,
       username: input.username,
       email: input.email,
     });
@@ -17,19 +24,33 @@ function App(input, setInput) {
 
   return (
     <div className="App">
-      <Form input={input} />
-      <Users removeUserData={removeUserData} />
+      {console.log(editData.username, editData.email)}
+      <Form
+        input={input}
+        setInput={setInput}
+        editData={editData}
+        setEditData={setEditData}
+        editStatus={editStatus}
+        setEditStatus={setEditStatus}
+      />
+      <Users
+        input={input}
+        removeUserData={removeUserData}
+        setEditData={setEditData}
+        setEditStatus={setEditStatus}
+      />
     </div>
   );
 }
 
-function Form() {
-  const [input, setInput] = useState({
-    id: nanoid(),
-    username: "",
-    email: "",
-    items: [],
-  });
+function Form({
+  input,
+  setInput,
+  editData,
+  setEditData,
+  editStatus,
+  setEditStatus,
+}) {
   const [stateError, setStateError] = useState({
     userNameError: "",
     emailError: "",
@@ -38,10 +59,10 @@ function Form() {
   let validate = () => {
     let userNameError = "";
     let emailError = "";
-    if (!input.username) {
+    if (!input.username && !editData.username) {
       userNameError = "Name cannot be blank";
     }
-    if (!input.email.includes("@")) {
+    if (!input.email.includes("@") && !editData.email.includes("@")) {
       emailError = "Incorrect Email";
     }
     if (userNameError || emailError) {
@@ -55,12 +76,22 @@ function Form() {
     e.preventDefault();
     const isValid = validate();
     if (isValid) {
-      let newItems = [
-        ...input.items,
-        { id: input.id, username: input.username, email: input.email },
-      ];
-      setInput({ items: newItems, id: nanoid(), username: "", email: "" });
+      if (editStatus === false) {
+        let newItems = [
+          ...input.items,
+          { id: nanoid(), username: input.username, email: input.email },
+        ];
+        setInput({ items: newItems, username: "", email: "" });
+      } else {
+        let editItems = [
+          ...input.items,
+          { id: nanoid(), username: editData.username, email: editData.email },
+        ];
+        setInput({ items: editItems, username: "", email: "" });
+      }
       setStateError({ userNameError: "", emailError: "" });
+      setEditData({});
+      setEditStatus(false);
     }
   };
 
@@ -74,7 +105,7 @@ function Form() {
       <h3>Add user data:</h3>
       <form onSubmit={formSubmit}>
         <input
-          value={input.username}
+          value={editStatus === true ? editData.username : input.username}
           type="text"
           name="username"
           onChange={inputChange}
@@ -82,7 +113,7 @@ function Form() {
         />
         <div className="ErrorMessage">{stateError.userNameError}</div>
         <input
-          value={input.email}
+          value={editStatus === true ? editData.email : input.email}
           type="email"
           name="email"
           onChange={inputChange}
@@ -97,7 +128,7 @@ function Form() {
   );
 }
 
-function Users() {
+function Users({ input, removeUserData, setEditData, setEditStatus }) {
   return (
     <div className="Users">
       <table>
@@ -109,22 +140,34 @@ function Users() {
           </tr>
         </thead>
         <tbody>
-          <User />
+          <User
+            input={input}
+            removeUserData={removeUserData}
+            setEditData={setEditData}
+            setEditStatus={setEditStatus}
+          />
         </tbody>
       </table>
     </div>
   );
 }
 
-function User(input, removeUserData) {
-  const [editId, setEditId] = useState(null);
+function User({ input, removeUserData, setEditData, setEditStatus }) {
+  const [selected, setSelected] = useState(null);
 
   return input.items.map((item, id) => (
-    <tr key={id}>
+    <tr
+      key={id}
+      onClick={() => setEditStatus(true) || setSelected(item.id)}
+      className={item.id === selected ? "user selected" : "user"}
+    >
       <td>{item.username}</td>
       <td>{item.email}</td>
       <td>
-        <button className="EditBtn" onClick={() => setEditId(item.id)}>
+        <button
+          className="EditBtn"
+          onClick={() => setEditData(input.items[id])}
+        >
           Edit
         </button>
         <button className="RemoveBtn" onClick={() => removeUserData(id)}>

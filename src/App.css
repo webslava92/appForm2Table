@@ -48,12 +48,14 @@ h3 {
     border: 1px solid #ccc;
     background-color: #efefef;
     padding: 5px;
+    cursor: pointer;
 }
 
 .Users th {
     width: 50%;
     background-color: #ccc;;
     padding: 5px;
+    cursor: pointer;
 }
 
 #Form {
@@ -115,6 +117,10 @@ h3 {
 }
 
 .itemData.active {
+  background-color: #fff;
+}
+
+.user.selected td{
   background-color: #fff;
 }
 
