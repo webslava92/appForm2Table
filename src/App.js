@@ -97,7 +97,12 @@ function Form({
 
   const inputChange = (e) => {
     let { name, value } = e.target;
-    setInput((prevInput) => ({ ...prevInput, [name]: value }));
+    if (editStatus === false) {
+      setInput((prevInput) => ({ ...prevInput, [name]: value }));
+    } else {
+      setEditData((prevEditData) => ({ ...prevEditData, [name]: value }));
+    }
+    
   };
 
   return (
