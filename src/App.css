@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -8,31 +10,47 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 15px;
+  background: linear-gradient(
+    90deg,
+    rgba(48, 16, 255, 1) 0%,
+    rgba(100, 115, 255, 1) 100%
+  );
+}
+
+h3 {
+  color: rgba(140, 1, 250, 1);
 }
 
 .App {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 400px;
+  width: 500px;
   text-align: center;
+  background-color: #fff;
 }
 
-.Table {
+.Users {
   width: 100%;
   padding: 15px 15px 30px;
 }
 
-.Table table {
+.Users table {
   width: 100%;
 }
 
-.Table td {
-    border: 1px solid #ccc;
-    width: 50%;
-    border: 1px solid #ccc;
+.ControlBtns {
+  display: flex;
+  flex-direction: column;
 }
 
-.Table th {
+.Users td {
+    border: 1px solid #ccc;
+    background-color: #efefef;
+    padding: 5px;
+}
+
+.Users th {
     width: 50%;
     background-color: #ccc;;
     padding: 5px;
@@ -54,19 +72,58 @@ body {
   border: 1px solid #ccc;
 }
 
-#Form button {
+#Form button,
+.RemoveBtn,
+.EditBtn {
   width: 100%;
   padding: 15px;
-  background-color: #ccc;
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
   border: none;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 700;
   margin-top: 10px;
+  cursor: pointer;
+  transition: all .3s;
+  color: #fff;
+}
+
+#Form button:hover,
+.RemoveBtn:hover,
+.EditBtn:hover {
+  background: linear-gradient(
+    90deg, 
+    rgba(93, 12, 255, 1) 0%, 
+    rgba(107, 77, 250, 1) 100%);
+}
+
+.RemoveBtn,
+.EditBtn {
+  padding: 5px;
+  font-size: 10px;
+  margin: 2px 0;
 }
 
 .ErrorMessage {
   font-size: 10px;
   font-weight: bold;
   color: red;
+}
+
+.itemData.active {
+  background-color: #fff;
+}
+
+@media (max-width: 600px) {
+  .App {
+    width: 100%;
+    min-width: 100%;
+  }
+  .Table {
+    padding: 15px 10px 30px;
+  }
 }
