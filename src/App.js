@@ -24,7 +24,6 @@ function App() {
 
   return (
     <div className="App">
-      {console.log(editData.username, editData.email)}
       <Form
         input={input}
         setInput={setInput}
@@ -59,10 +58,10 @@ function Form({
   let validate = () => {
     let userNameError = "";
     let emailError = "";
-    if (!input.username && !editData.username) {
+    if (editStatus ? !editData.username : !input.username) {
       userNameError = "Name cannot be blank";
     }
-    if (!input.email.includes("@") && !editData.email.includes("@")) {
+    if (editStatus ? !editData.email.includes("@") : !input.email.includes("@")) {
       emailError = "Incorrect Email";
     }
     if (userNameError || emailError) {
@@ -76,18 +75,15 @@ function Form({
     e.preventDefault();
     const isValid = validate();
     if (isValid) {
-      if (editStatus === false) {
+      if (editStatus) {
+        let editItems = input.items.map(item => item.id === editData.id ? {...item, username: editData.username, email: editData.email} : item);
+        setInput({ items: editItems, username: "", email: "" })
+      } else {
         let newItems = [
           ...input.items,
           { id: nanoid(), username: input.username, email: input.email },
         ];
         setInput({ items: newItems, username: "", email: "" });
-      } else {
-        let editItems = [
-          ...input.items,
-          { id: nanoid(), username: editData.username, email: editData.email },
-        ];
-        setInput({ items: editItems, username: "", email: "" });
       }
       setStateError({ userNameError: "", emailError: "" });
       setEditData({});
@@ -97,12 +93,11 @@ function Form({
 
   const inputChange = (e) => {
     let { name, value } = e.target;
-    if (editStatus === false) {
-      setInput((prevInput) => ({ ...prevInput, [name]: value }));
-    } else {
+    if (editStatus) {
       setEditData((prevEditData) => ({ ...prevEditData, [name]: value }));
+    } else {
+      setInput((prevInput) => ({ ...prevInput, [name]: value }));
     }
-    
   };
 
   return (
@@ -134,6 +129,14 @@ function Form({
 }
 
 function Users({ input, removeUserData, setEditData, setEditStatus }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5);
+  const lastUserIndex = currentPage * usersPerPage;
+  const firstUserIndex = lastUserIndex - usersPerPage;
+  const currentUsers = input.items.slice(firstUserIndex, lastUserIndex);
+  
+  
+
   return (
     <div className="Users">
       <table>
@@ -150,20 +153,34 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
             removeUserData={removeUserData}
             setEditData={setEditData}
             setEditStatus={setEditStatus}
+            currentUsers={currentUsers}
           />
         </tbody>
       </table>
+      <div className="pagination__wrap">
+        <Pagination
+          input={input}
+          usersPerPage={usersPerPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
     </div>
   );
 }
 
-function User({ input, removeUserData, setEditData, setEditStatus }) {
+function User({
+  input,
+  removeUserData,
+  setEditData,
+  setEditStatus,
+  currentUsers,
+}) {
   const [selected, setSelected] = useState(null);
 
-  return input.items.map((item, id) => (
+  return currentUsers.map((item, id) => (
     <tr
       key={id}
-      onClick={() => setEditStatus(true) || setSelected(item.id)}
+      onClick={() => setSelected(item.id)}
       className={item.id === selected ? "user selected" : "user"}
     >
       <td>{item.username}</td>
@@ -171,7 +188,7 @@ function User({ input, removeUserData, setEditData, setEditStatus }) {
       <td>
         <button
           className="EditBtn"
-          onClick={() => setEditData(input.items[id])}
+          onClick={() => setEditStatus(true) || setEditData(input.items[id])}
         >
           Edit
         </button>
@@ -181,6 +198,47 @@ function User({ input, removeUserData, setEditData, setEditStatus }) {
       </td>
     </tr>
   ));
+}
+
+function Pagination({ input, usersPerPage, setCurrentPage }) {
+  const pageNumbers = [];
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const nextPage = () => setCurrentPage( prev => prev + 1);
+  const prevPage = () => setCurrentPage((prev) => prev - 1);
+
+  for (let i = 1; i <= Math.ceil(input.items.length / usersPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <div className="pagination__inner">
+      <ul className="pagination__list">
+        {pageNumbers.map((number) => (
+          <li className="pagination__item" key={number}>
+            <a
+              href="!#"
+              className="pagination__page-link"
+              onClick={() => paginate(number)}
+            >
+              {number}
+            </a>
+          </li>
+        ))}
+        <li>of</li>
+        <li className="pagination__all-pages-link">{input.items.length}</li>
+        <li className="pagination__btns-control">
+          <button
+            className="pagination__btn-prev"
+            onClick={prevPage}
+          ></button>
+          <button
+            className="pagination__btn-next"
+            onClick={nextPage}
+          ></button>
+        </li>
+      </ul>
+    </div>
+  );
 }
 
 export default App;
