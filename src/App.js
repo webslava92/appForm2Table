@@ -167,6 +167,7 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
           usersPerPage={usersPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
+          currentUsers={currentUsers}
         />
       </div>
     </div>
@@ -207,33 +208,33 @@ function User({
   ));
 }
 
-function Pagination({ input, currentPage, setCurrentPage, usersPerPage }) {
+function Pagination({
+  input,
+  currentPage,
+  setCurrentPage,
+  usersPerPage,
+  currentUsers,
+}) {
   const [activeNextBtn, setActiveNextBtn] = useState(false);
   const [activePrevBtn, setActivePrevBtn] = useState(false);
   const numberOfPages = Math.ceil(input.items.length / usersPerPage);
-  const completedPage = Math.floor(input.items.length / usersPerPage);
+  const prevPage = () => {
+    setActivePrevBtn(currentPage !== 1 ? true : false);
+    setCurrentPage((prev) => (prev - 1 !== 0 ? prev - 1 : 1));
+  };
   const nextPage = () => {
+    setActiveNextBtn(numberOfPages > currentPage ? true : false);
     setCurrentPage((prev) =>
       input.items.length > 0
         ? prev + 1 < numberOfPages + 1
-          ? (prev + 1)
+          ? prev + 1
           : prev
         : 1
     );
   };
-  const prevPage = () => {
-    setCurrentPage((prev) =>
-      prev - 1 !== 0 ? prev - 1 : 1
-    );
-  };
 
-  const paginateStart =
-    input.items.length > 0
-      ? input.items.length < 6
-        ? 1
-        : (currentPage - completedPage) * usersPerPage
-      : 0;
-  const paginateMax = paginateStart + input.items.length;
+  const paginateMax = (currentPage - 1) * usersPerPage + currentUsers.length;
+  const paginateStart = paginateMax - currentUsers.length + 1;
 
   return (
     <div className="pagination__inner">
@@ -272,7 +273,6 @@ function Pagination({ input, currentPage, setCurrentPage, usersPerPage }) {
           </button>
         </li>
       </ul>
-      {console.log(currentPage - completedPage)}
     </div>
   );
 }
