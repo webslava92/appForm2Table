@@ -215,15 +215,14 @@ function Pagination({
   usersPerPage,
   currentUsers,
 }) {
-  const [activeNextBtn, setActiveNextBtn] = useState(false);
-  const [activePrevBtn, setActivePrevBtn] = useState(false);
   const numberOfPages = Math.ceil(input.items.length / usersPerPage);
+  const activeNextBtn = numberOfPages > currentPage ? true : false;
+  const activePrevBtn = currentPage - 1 !== 0 ? true : false;
+
   const prevPage = () => {
-    setActivePrevBtn(currentPage !== 1 ? true : false);
     setCurrentPage((prev) => (prev - 1 !== 0 ? prev - 1 : 1));
   };
   const nextPage = () => {
-    setActiveNextBtn(numberOfPages > currentPage ? true : false);
     setCurrentPage((prev) =>
       input.items.length > 0
         ? prev + 1 < numberOfPages + 1
@@ -234,7 +233,8 @@ function Pagination({
   };
 
   const paginateMax = (currentPage - 1) * usersPerPage + currentUsers.length;
-  const paginateStart = paginateMax - currentUsers.length + 1;
+  const paginateStart =
+    input.items.length === 0 ? 0 : paginateMax - currentUsers.length + 1;
 
   return (
     <div className="pagination__inner">
@@ -273,6 +273,7 @@ function Pagination({
           </button>
         </li>
       </ul>
+      {console.log(activePrevBtn, activeNextBtn)}
     </div>
   );
 }
