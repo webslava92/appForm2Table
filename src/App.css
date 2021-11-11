@@ -32,7 +32,7 @@ h3 {
 
 .Users {
   width: 100%;
-  padding: 15px 15px 30px;
+  padding: 15px;
 }
 
 .Users table {
@@ -132,6 +132,9 @@ h3 {
   justify-content: right;
   background-color: #fff;
 }
+.pagination__inner {
+  padding-top: 25px;
+}
 
 .pagination__list {
   color: rgba(140, 1, 250, 1);
@@ -143,25 +146,44 @@ h3 {
 }
 
 .pagination__page-link,
-.pagination__all-pages-link {
+.pagination__all-pages,
+.pagination__page-num {
   padding: 5px;
   text-decoration: none;
 }
 
 .pagination__btns-control {
   margin-left: 20px;
+  align-items: center;
+  display: flex;
 }
 
 .pagination__btn-prev,
 .pagination__btn-next {
   position: relative;
-  width: 20px;
-  height: 20px;
-  padding: 2px;
+  display: flex;
+  width:15px;
+  height: 15px;
   background-color: transparent;
   border: none;
   font-weight: 600;
   color: #ccc;
+  height: 100%;
+  cursor: pointer;
+}
+
+.pagination__btn-prev svg,
+.pagination__btn-next svg {
+  fill: #ccc;
+}
+
+.pagination__btn-prev.active svg,
+.pagination__btn-next.active svg {
+  fill: rgba(140, 1, 250, 1);
+}
+
+.pagination__btn-next {
+  margin-left: 10px;
 }
 
 .pagination__btn-prev::before,
@@ -176,12 +198,9 @@ h3 {
   align-items: center;
 }
 
-.pagination__btn-prev::before {
-  content: '<';
-}
-
-.pagination__btn-next::before {
-  content: '>';
+.pagination__btn-prev:hover svg,
+.pagination__btn-next:hover svg {
+  fill: rgba(140, 1, 250, 1);
 }
 
 @media (max-width: 600px) {

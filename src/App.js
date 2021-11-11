@@ -61,7 +61,9 @@ function Form({
     if (editStatus ? !editData.username : !input.username) {
       userNameError = "Name cannot be blank";
     }
-    if (editStatus ? !editData.email.includes("@") : !input.email.includes("@")) {
+    if (
+      editStatus ? !editData.email.includes("@") : !input.email.includes("@")
+    ) {
       emailError = "Incorrect Email";
     }
     if (userNameError || emailError) {
@@ -76,8 +78,12 @@ function Form({
     const isValid = validate();
     if (isValid) {
       if (editStatus) {
-        let editItems = input.items.map(item => item.id === editData.id ? {...item, username: editData.username, email: editData.email} : item);
-        setInput({ items: editItems, username: "", email: "" })
+        let editItems = input.items.map((item) =>
+          item.id === editData.id
+            ? { ...item, username: editData.username, email: editData.email }
+            : item
+        );
+        setInput({ items: editItems, username: "", email: "" });
       } else {
         let newItems = [
           ...input.items,
@@ -134,8 +140,6 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
   const lastUserIndex = currentPage * usersPerPage;
   const firstUserIndex = lastUserIndex - usersPerPage;
   const currentUsers = input.items.slice(firstUserIndex, lastUserIndex);
-  
-  
 
   return (
     <div className="Users">
@@ -161,6 +165,7 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
         <Pagination
           input={input}
           usersPerPage={usersPerPage}
+          currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
       </div>
@@ -180,7 +185,9 @@ function User({
   return currentUsers.map((item, id) => (
     <tr
       key={id}
-      onClick={() => setSelected(item.id)}
+      onClick={() =>
+        selected === item.id ? setSelected(null) : setSelected(item.id)
+      }
       className={item.id === selected ? "user selected" : "user"}
     >
       <td>{item.username}</td>
@@ -200,43 +207,72 @@ function User({
   ));
 }
 
-function Pagination({ input, usersPerPage, setCurrentPage }) {
-  const pageNumbers = [];
-  const paginate = pageNumber => setCurrentPage(pageNumber);
-  const nextPage = () => setCurrentPage( prev => prev + 1);
-  const prevPage = () => setCurrentPage((prev) => prev - 1);
+function Pagination({ input, currentPage, setCurrentPage, usersPerPage }) {
+  const [activeNextBtn, setActiveNextBtn] = useState(false);
+  const [activePrevBtn, setActivePrevBtn] = useState(false);
+  const numberOfPages = Math.ceil(input.items.length / usersPerPage);
+  const completedPage = Math.floor(input.items.length / usersPerPage);
+  const nextPage = () => {
+    setCurrentPage((prev) =>
+      input.items.length > 0
+        ? prev + 1 < numberOfPages + 1
+          ? (prev + 1)
+          : prev
+        : 1
+    );
+  };
+  const prevPage = () => {
+    setCurrentPage((prev) =>
+      prev - 1 !== 0 ? prev - 1 : 1
+    );
+  };
 
-  for (let i = 1; i <= Math.ceil(input.items.length / usersPerPage); i++) {
-    pageNumbers.push(i);
-  }
+  const paginateStart =
+    input.items.length > 0
+      ? input.items.length < 6
+        ? 1
+        : (currentPage - completedPage) * usersPerPage
+      : 0;
+  const paginateMax = paginateStart + input.items.length;
 
   return (
     <div className="pagination__inner">
       <ul className="pagination__list">
-        {pageNumbers.map((number) => (
-          <li className="pagination__item" key={number}>
-            <a
-              href="!#"
-              className="pagination__page-link"
-              onClick={() => paginate(number)}
-            >
-              {number}
-            </a>
-          </li>
-        ))}
+        <li className="pagination__page-num">
+          {paginateStart}-{paginateMax}
+        </li>
         <li>of</li>
-        <li className="pagination__all-pages-link">{input.items.length}</li>
+        <li className="pagination__all-pages">{input.items.length}</li>
         <li className="pagination__btns-control">
           <button
-            className="pagination__btn-prev"
+            className={
+              activePrevBtn === true
+                ? "pagination__btn-prev active"
+                : "pagination__btn-prev"
+            }
             onClick={prevPage}
-          ></button>
+          >
+            <svg viewBox="0 0 20 20" height="20px" width="20px">
+              <path fill="none" d="M0 0h20v20H0z"></path>
+              <path d="M17.77 3.77L16 2 6 12l10 10 1.77-1.77L9.54 12z"></path>
+            </svg>
+          </button>
           <button
-            className="pagination__btn-next"
+            className={
+              activeNextBtn === true
+                ? "pagination__btn-next active"
+                : "pagination__btn-next"
+            }
             onClick={nextPage}
-          ></button>
+          >
+            <svg viewBox="0 0 20 20" height="20px" width="20px">
+              <path fill="none" d="M0 0h20v20H0V0z"></path>
+              <path d="M6.23 20.23L8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
+            </svg>
+          </button>
         </li>
       </ul>
+      {console.log(currentPage - completedPage)}
     </div>
   );
 }
