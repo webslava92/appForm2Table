@@ -6,7 +6,6 @@ function Pagination({
   currentPage,
   setCurrentPage,
   usersPerPage,
-  currentUsers,
 }) {
   const numberOfPages = Math.ceil(input.length / usersPerPage);
   const activeNextBtn = numberOfPages > currentPage ? true : false;
@@ -21,9 +20,9 @@ function Pagination({
     );
   };
 
-  const paginateMax = (currentPage - 1) * usersPerPage + currentUsers.length;
+  const paginateMax = (currentPage - 1) * usersPerPage + input.length;
   const paginateStart =
-    input.length === 0 ? 0 : paginateMax - currentUsers.length + 1;
+    input.length === 0 ? 0 : paginateMax - input.length + 1;
 
   return (
     <div className="pagination__inner">
@@ -62,7 +61,6 @@ function Pagination({
           </button>
         </li>
       </ul>
-      {console.log(activePrevBtn, activeNextBtn)}
     </div>
   );
 }

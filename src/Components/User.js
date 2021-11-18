@@ -6,11 +6,10 @@ function User({
   removeUserData,
   setEditData,
   setEditStatus,
-  currentUsers,
 }) {
   const [selected, setSelected] = useState(null);
 
-  return currentUsers.map((item, id) => (
+  return   input.map((item, id) => (
     <tr
       key={id}
       onClick={() =>

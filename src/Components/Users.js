@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "../App.css";
 import User from "./User.js";
 import Pagination from "./Pagination.js";
 
-function Users({ input, removeUserData, setEditData, setEditStatus }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5);
-  const lastUserIndex = currentPage * usersPerPage;
-  const firstUserIndex = lastUserIndex - usersPerPage;
-  const currentUsers = input.slice(firstUserIndex, lastUserIndex);
+const usersPerPage = 6;
+
+function Users({
+  input,
+  removeUserData,
+  setEditData,
+  setEditStatus,
+  currentPage,
+  setCurrentPage,
+}) {
 
   return (
     <div className="Users">
@@ -26,7 +30,6 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
             removeUserData={removeUserData}
             setEditData={setEditData}
             setEditStatus={setEditStatus}
-            currentUsers={currentUsers}
           />
         </tbody>
       </table>
@@ -36,7 +39,6 @@ function Users({ input, removeUserData, setEditData, setEditStatus }) {
           usersPerPage={usersPerPage}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-          currentUsers={currentUsers}
         />
       </div>
     </div>
