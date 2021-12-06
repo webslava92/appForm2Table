@@ -37,7 +37,8 @@ h3 {
 }
 
 .nodata,
-.loading {
+.loading,
+.error {
   position: absolute;
   max-width: 400px;
   width: 100%;
@@ -53,6 +54,15 @@ h3 {
   justify-content: center;
   align-items: center;
   color: rgba(140, 1, 250, 1);
+}
+
+.nodata,
+.loading {
+  color: rgba(140, 1, 250, 1);
+}
+
+.error {
+  color: red;
 }
 
 .Users table {

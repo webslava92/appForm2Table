@@ -4,6 +4,10 @@ import Form from "./Components/Form";
 import Users from "./Components/Users";
 import axios from "./Components/axios";
 
+export let usersPerPage = 0;
+export let numberOfPages = 0;
+export let totalUsers = 0;
+
 function App() {
   const [users, setUsers] = useState({
     items: [],
@@ -11,6 +15,7 @@ function App() {
     email: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("noError");
 
   const [editData, setEditData] = useState({});
   const [editStatus, setEditStatus] = useState(false);
@@ -19,11 +24,12 @@ function App() {
   const noUsers = !users || (users && users.lenght === 0);
 
   const getUsersCallback = useCallback(() => {
+    setIsLoading(true);
     const getUsers = async () => {
       try {
-        setIsLoading(true);
         const response = await axios.get(`/users?page=${currentPage}`);
-        if (response && response.data) setIsLoading(false);
+        setIsLoading(false);
+        if (response && response.data);
         setUsers({
           items: response.data.data.map((item) => ({
             id: item.id,
@@ -33,8 +39,18 @@ function App() {
           first_name: "",
           email: "",
         });
+        usersPerPage = response.data.per_page;
+        numberOfPages = response.data.total_pages;
+        totalUsers = response.data.total;
       } catch (error) {
-        console.log("Error:", error);
+        setIsLoading(false);
+        if (error.response) {
+          setError("Response error");
+        } else if (error.request) {
+          setError("Request error");
+        } else {
+          setError("Undefined error");
+        }
       }
     };
     getUsers();
@@ -44,46 +60,42 @@ function App() {
     getUsersCallback();
   }, [getUsersCallback]);
 
-  const removeUserData = async (id) => {
-    console.log("id: ", id);
+  const removeUserDataAsync = async ({ id }) => {
+    console.log("id: ", { id });
     try {
       setIsLoading(true);
-      const response = await axios.delete(`/users/${id}`, id);
+      const response = await axios.delete(`/users/${id}`);
       console.log("response: ", response);
-      if (response && response.data) setIsLoading(false);
-      getUsersCallback();
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       if (error.response) {
-        // get response with a status code not in range 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        setError("Response error");
       } else if (error.request) {
-        // no response
-        console.log(error.request);
+        setError("Request error");
       } else {
-        // Something wrong in setting up the request
-        console.log("Error", error.message);
+        setError("Undefined error");
       }
     }
   };
 
-  // const removeUserData = (id) => {
-  //   console.log("id: ", id);
-  //   const reducedItems = users.items.filter((item, itemId) => {
-  //     return itemId !== id;
-  //   });
-  //   setUsers({
-  //     items: reducedItems,
-  //     first_name: users.first_name,
-  //     email: users.email,
-  //   });
-  // };
+  const removeUserData = (id) => {
+    const reducedItems = users.items.filter((item) => {
+      return item !== id;
+    });
+    setUsers({
+      items: reducedItems,
+      first_name: users.first_name,
+      email: users.email,
+    });
+  };
 
   return (
     <div className="App">
       <Form
         users={users}
+        setIsLoading={setIsLoading}
+        setError={setError}
         setUsers={setUsers}
         editData={editData}
         setEditData={setEditData}
@@ -95,7 +107,9 @@ function App() {
       <Users
         users={users.items}
         isLoading={isLoading}
+        error={error}
         removeUserData={removeUserData}
+        removeUserDataAsync={removeUserDataAsync}
         setEditData={setEditData}
         setEditStatus={setEditStatus}
         currentPage={currentPage}

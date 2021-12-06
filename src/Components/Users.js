@@ -2,13 +2,14 @@ import React from "react";
 import "../App.css";
 import User from "./User.js";
 import Pagination from "./Pagination.js";
-
-const usersPerPage = 18;
+import usersPerPage from "../App";
 
 function Users({
   users,
   isLoading,
+  error,
   removeUserData,
+  removeUserDataAsync,
   setEditData,
   setEditStatus,
   currentPage,
@@ -17,8 +18,9 @@ function Users({
 }) {
   return (
     <div className="Users">
-      {(noUsers && <h2 className="nodata">No Users data found!</h2>) ||
-        (isLoading ? <h2 className="loading">Data is being loaded...</h2> : "")}
+      {noUsers && <h2 className="nodata">No Users data found!</h2>}
+      {isLoading ? <h2 className="loading">Data is being loaded...</h2> : ""}
+      {error !== "noError" ? <h2 className="error">{error}</h2> : ""}
       <table>
         <thead>
           <tr>
@@ -31,6 +33,7 @@ function Users({
           <User
             users={users}
             removeUserData={removeUserData}
+            removeUserDataAsync={removeUserDataAsync}
             setEditData={setEditData}
             setEditStatus={setEditStatus}
             noUsers={noUsers}

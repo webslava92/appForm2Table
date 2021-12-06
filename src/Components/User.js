@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import "../App.css";
 
-function User({ users, removeUserData, setEditData, setEditStatus, noUsers }) {
+function User({
+  users,
+  removeUserData,
+  removeUserDataAsync,
+  setEditData,
+  setEditStatus,
+  noUsers,
+}) {
   const [selected, setSelected] = useState(null);
 
   return (
     !noUsers &&
-    users.map((item, id) => (
+    users.map((item) => (
       <tr
-        key={id}
+        key={item.id}
         onClick={() =>
           selected === item.id ? setSelected(null) : setSelected(item.id)
         }
@@ -19,13 +26,13 @@ function User({ users, removeUserData, setEditData, setEditStatus, noUsers }) {
         <td>
           <button
             className="EditBtn"
-            onClick={() => setEditStatus(true) || setEditData(users[id])}
+            onClick={() => setEditStatus(true) || setEditData(item)}
           >
             Edit
           </button>
           <button
             className="RemoveBtn"
-            onClick={() => removeUserData(users[id])}
+            onClick={() => removeUserDataAsync(item) && removeUserData(item)}
           >
             Remove
           </button>

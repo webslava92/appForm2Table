@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
+import axios from "./axios";
 import "../App.css";
 
 function Form({
   users,
+  setIsLoading,
+  setError,
   setUsers,
   editData,
   setEditData,
@@ -35,6 +38,48 @@ function Form({
     return true;
   };
 
+  const addUserDataAsync = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`/users`, {
+        first_name: users.first_name,
+        email: users.email,
+      });
+      console.log("response: ", response);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        setError("Response error");
+      } else if (error.request) {
+        setError("Request error");
+      } else {
+        setError("Undefined error");
+      }
+    }
+  };
+
+  const editUserDataAsync = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.put(`/users`, {
+        first_name: editData.first_name,
+        email: editData.email,
+      });
+      console.log("response: ", response);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response) {
+        setError("Response error");
+      } else if (error.request) {
+        setError("Request error");
+      } else {
+        setError("Undefined error");
+      }
+    }
+  };
+
   const formSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
@@ -50,12 +95,14 @@ function Form({
             : item
         );
         setUsers({ items: editItems, first_name: "", email: "" });
+        editUserDataAsync();
       } else {
         const newItems = [
           ...users.items,
           { id: nanoid(), first_name: users.first_name, email: users.email },
         ];
         setUsers({ items: newItems, first_name: "", email: "" });
+        addUserDataAsync();
       }
       setStateError({ firstNameError: "", emailError: "" });
       setEditData({});
