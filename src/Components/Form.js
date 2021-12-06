@@ -3,26 +3,28 @@ import { nanoid } from "nanoid";
 import "../App.css";
 
 function Form({
-  input,
-  setInput,
+  users,
+  setUsers,
   editData,
   setEditData,
   editStatus,
   setEditStatus,
+  currentPage,
+  getUsersCallback,
 }) {
   const [stateError, setStateError] = useState({
-    userNameError: "",
+    firstNameError: "",
     emailError: "",
   });
 
-  let validate = () => {
+  const validate = () => {
     let userNameError = "";
     let emailError = "";
-    if (editStatus ? !editData.username : !input.username) {
+    if (editStatus ? !editData.first_name : !users.first_name) {
       userNameError = "Name cannot be blank";
     }
     if (
-      editStatus ? !editData.email.includes("@") : !input.email.includes("@")
+      editStatus ? !editData.email.includes("@") : !users.email.includes("@")
     ) {
       emailError = "Incorrect Email";
     }
@@ -38,31 +40,35 @@ function Form({
     const isValid = validate();
     if (isValid) {
       if (editStatus) {
-        let editItems = input.items.map((item) =>
+        const editItems = users.items.map((item) =>
           item.id === editData.id
-            ? { ...item, username: editData.username, email: editData.email }
+            ? {
+                ...item,
+                first_name: editData.first_name,
+                email: editData.email,
+              }
             : item
         );
-        setInput({ items: editItems, username: "", email: "" });
+        setUsers({ items: editItems, first_name: "", email: "" });
       } else {
-        let newItems = [
-          ...input.items,
-          { id: nanoid(), username: input.username, email: input.email },
+        const newItems = [
+          ...users.items,
+          { id: nanoid(), first_name: users.first_name, email: users.email },
         ];
-        setInput({ items: newItems, username: "", email: "" });
+        setUsers({ items: newItems, first_name: "", email: "" });
       }
-      setStateError({ userNameError: "", emailError: "" });
+      setStateError({ firstNameError: "", emailError: "" });
       setEditData({});
       setEditStatus(false);
     }
   };
 
-  const inputChange = (e) => {
-    let { name, value } = e.target;
+  const usersChange = (e) => {
+    const { name, value } = e.target;
     if (editStatus) {
       setEditData((prevEditData) => ({ ...prevEditData, [name]: value }));
     } else {
-      setInput((prevInput) => ({ ...prevInput, [name]: value }));
+      setUsers((prevUsers) => ({ ...prevUsers, [name]: value }));
     }
   };
 
@@ -71,18 +77,18 @@ function Form({
       <h3>Add user data:</h3>
       <form onSubmit={formSubmit}>
         <input
-          value={editStatus === true ? editData.username : input.username}
+          value={editStatus === true ? editData.first_name : users.first_name}
           type="text"
-          name="username"
-          onChange={inputChange}
+          name="first_name"
+          onChange={usersChange}
           placeholder="Name"
         />
-        <div className="ErrorMessage">{stateError.userNameError}</div>
+        <div className="ErrorMessage">{stateError.first_nameError}</div>
         <input
-          value={editStatus === true ? editData.email : input.email}
+          value={editStatus === true ? editData.email : users.email}
           type="email"
           name="email"
-          onChange={inputChange}
+          onChange={usersChange}
           placeholder="Email"
         />
         <div className="ErrorMessage">{stateError.emailError}</div>
