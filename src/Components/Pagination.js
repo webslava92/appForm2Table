@@ -1,10 +1,8 @@
 import React from "react";
 import "../App.css";
-import numberOfPages from "../App";
-import totalUsers from "../App";
 
-function Pagination({ users, currentPage, setCurrentPage, usersPerPage }) {
-  const activeNextBtn = numberOfPages > currentPage ? true : false;
+function Pagination({ users, currentPage, setCurrentPage, paging }) {
+  const activeNextBtn = paging.numberOfPages > currentPage ? true : false;
   const activePrevBtn = currentPage - 1 !== 0 ? true : false;
 
   const prevPage = () => {
@@ -12,11 +10,15 @@ function Pagination({ users, currentPage, setCurrentPage, usersPerPage }) {
   };
   const nextPage = () => {
     setCurrentPage((prev) =>
-      users.length > 0 ? (prev + 1 < numberOfPages + 1 ? prev + 1 : prev) : 1
+      users.length > 0
+        ? prev + 1 < paging.numberOfPages + 1
+          ? prev + 1
+          : prev
+        : 1
     );
   };
 
-  const paginateMax = (currentPage - 1) * usersPerPage + users.length;
+  const paginateMax = (currentPage - 1) * paging.usersPerPage + users.length;
   const paginateStart = users.length === 0 ? 0 : paginateMax - users.length + 1;
 
   return (
@@ -27,7 +29,7 @@ function Pagination({ users, currentPage, setCurrentPage, usersPerPage }) {
         </li>
         <li>of</li>
         <li className="pagination__all-pages">
-          {totalUsers < users.length ? totalUsers : users.length}
+          {paging.totalUsers > users.length ? paging.totalUsers : users.length}
         </li>
         <li className="pagination__btns-control">
           <button

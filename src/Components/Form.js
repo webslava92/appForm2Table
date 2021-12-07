@@ -6,14 +6,10 @@ import "../App.css";
 function Form({
   users,
   setIsLoading,
-  setError,
+  respError,
   setUsers,
   editData,
   setEditData,
-  editStatus,
-  setEditStatus,
-  currentPage,
-  getUsersCallback,
 }) {
   const [stateError, setStateError] = useState({
     firstNameError: "",
@@ -21,18 +17,16 @@ function Form({
   });
 
   const validate = () => {
-    let userNameError = "";
+    let firstNameError = "";
     let emailError = "";
-    if (editStatus ? !editData.first_name : !users.first_name) {
-      userNameError = "Name cannot be blank";
+    if (editData ? !editData.first_name : !users.first_name) {
+      firstNameError = "Name cannot be blank";
     }
-    if (
-      editStatus ? !editData.email.includes("@") : !users.email.includes("@")
-    ) {
+    if (editData ? !editData.email.includes("@") : !users.email.includes("@")) {
       emailError = "Incorrect Email";
     }
-    if (userNameError || emailError) {
-      setStateError({ userNameError, emailError });
+    if (firstNameError || emailError) {
+      setStateError({ firstNameError, emailError });
       return false;
     }
     return true;
@@ -49,13 +43,7 @@ function Form({
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      if (error.response) {
-        setError("Response error");
-      } else if (error.request) {
-        setError("Request error");
-      } else {
-        setError("Undefined error");
-      }
+      respError(error);
     }
   };
 
@@ -70,13 +58,7 @@ function Form({
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      if (error.response) {
-        setError("Response error");
-      } else if (error.request) {
-        setError("Request error");
-      } else {
-        setError("Undefined error");
-      }
+      respError(error);
     }
   };
 
@@ -84,7 +66,7 @@ function Form({
     e.preventDefault();
     const isValid = validate();
     if (isValid) {
-      if (editStatus) {
+      if (editData) {
         const editItems = users.items.map((item) =>
           item.id === editData.id
             ? {
@@ -105,14 +87,13 @@ function Form({
         addUserDataAsync();
       }
       setStateError({ firstNameError: "", emailError: "" });
-      setEditData({});
-      setEditStatus(false);
+      setEditData();
     }
   };
 
   const usersChange = (e) => {
     const { name, value } = e.target;
-    if (editStatus) {
+    if (editData) {
       setEditData((prevEditData) => ({ ...prevEditData, [name]: value }));
     } else {
       setUsers((prevUsers) => ({ ...prevUsers, [name]: value }));
@@ -124,15 +105,15 @@ function Form({
       <h3>Add user data:</h3>
       <form onSubmit={formSubmit}>
         <input
-          value={editStatus === true ? editData.first_name : users.first_name}
+          value={editData ? editData.first_name : users.first_name}
           type="text"
           name="first_name"
           onChange={usersChange}
           placeholder="Name"
         />
-        <div className="ErrorMessage">{stateError.first_nameError}</div>
+        <div className="ErrorMessage">{stateError.firstNameError}</div>
         <input
-          value={editStatus === true ? editData.email : users.email}
+          value={editData ? editData.email : users.email}
           type="email"
           name="email"
           onChange={usersChange}

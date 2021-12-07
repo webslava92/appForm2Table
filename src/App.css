@@ -36,27 +36,16 @@ h3 {
   position: relative;
 }
 
-.nodata,
+.nousers {
+  color: rgba(140, 1, 250, 1);
+}
+
 .loading,
 .error {
-  position: absolute;
-  max-width: 400px;
-  width: 100%;
-  height: 200px;
-  background-color: #fff;
-  margin: 0 auto;
-  padding: 15px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
   align-items: center;
   color: rgba(140, 1, 250, 1);
 }
 
-.nodata,
 .loading {
   color: rgba(140, 1, 250, 1);
 }
