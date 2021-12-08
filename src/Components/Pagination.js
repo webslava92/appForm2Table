@@ -1,24 +1,32 @@
 import React from "react";
 import "../App.css";
 
-function Pagination({ users, currentPage, setCurrentPage, paging }) {
-  const activeNextBtn = paging.numberOfPages > currentPage ? true : false;
-  const activePrevBtn = currentPage - 1 !== 0 ? true : false;
+function Pagination({ users, paging, setPaging }) {
+  const activeNextBtn =
+    paging.numberOfPages > paging.currentPage ? true : false;
+  const activePrevBtn = paging.currentPage - 1 !== 0 ? true : false;
 
   const prevPage = () => {
-    setCurrentPage((prev) => (prev - 1 !== 0 ? prev - 1 : 1));
-  };
-  const nextPage = () => {
-    setCurrentPage((prev) =>
-      users.length > 0
-        ? prev + 1 < paging.numberOfPages + 1
-          ? prev + 1
-          : prev
-        : 1
-    );
+    setPaging((prevPaging) => ({
+      ...prevPaging,
+      currentPage: paging.currentPage - 1 !== 0 ? paging.currentPage - 1 : 1,
+    }));
   };
 
-  const paginateMax = (currentPage - 1) * paging.usersPerPage + users.length;
+  const nextPage = (e) => {
+    setPaging((prevPaging) => ({
+      ...prevPaging,
+      currentPage:
+        users.length > 0
+          ? paging.currentPage + 1 < paging.numberOfPages + 1
+            ? paging.currentPage + 1
+            : paging.currentPage
+          : 1,
+    }));
+  };
+
+  const paginateMax =
+    (paging.currentPage - 1) * paging.usersPerPage + users.length;
   const paginateStart = users.length === 0 ? 0 : paginateMax - users.length + 1;
 
   return (

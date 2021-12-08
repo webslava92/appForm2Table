@@ -7,11 +7,10 @@ function Users({
   users,
   isLoading,
   error,
-  removeUserData,
+  removeUserDataAsync,
   setEditData,
   paging,
-  currentPage,
-  setCurrentPage,
+  setPaging,
 }) {
   return (
     <div className="Users">
@@ -28,19 +27,14 @@ function Users({
         <tbody>
           <User
             users={users}
-            removeUserData={removeUserData}
+            removeUserDataAsync={removeUserDataAsync}
             setEditData={setEditData}
           />
         </tbody>
       </table>
       {!users.length && <h2 className="nousers">No Users data found!</h2>}
       <div className="pagination__wrap">
-        <Pagination
-          users={users}
-          paging={paging}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <Pagination users={users} paging={paging} setPaging={setPaging} />
       </div>
     </div>
   );

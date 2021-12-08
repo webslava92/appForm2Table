@@ -4,6 +4,10 @@ import Form from "./Components/Form";
 import Users from "./Components/Users";
 import axios from "./Components/axios";
 
+export function getError(error) {
+  return error.response || error.request ? "Response error" : "Undefined error";
+}
+
 function App() {
   const [users, setUsers] = useState({
     items: [],
@@ -17,43 +21,39 @@ function App() {
     usersPerPage: 0,
     numberOfPages: 0,
     totalUsers: 0,
+    currentPage: 1
   });
-  const [currentPage, setCurrentPage] = useState(2);
-
-  const respError = (error) => {
-    let err =
-      error.response || error.request ? "Response error" : "Undefined error";
-    setError(err);
-  };
 
   const getUsersCallback = useCallback(() => {
     setIsLoading(true);
     const getUsers = async () => {
       try {
-        const response = await axios.get(`/users?page=${currentPage}`);
+        const response = await axios.get(`/users?page=${paging.currentPage}`);
         setIsLoading(false);
-        if (response);
-        setUsers({
-          items: response.data.data.map((item) => ({
-            id: item.id,
-            first_name: item.first_name,
-            email: item.email,
-          })),
-          first_name: "",
-          email: "",
-        });
-        setPaging({
-          usersPerPage: response.data.per_page,
-          numberOfPages: response.data.total_pages,
-          totalUsers: response.data.total,
-        });
+        if (response.data) {
+          setUsers({
+            items: response.data.data.map((item) => ({
+              id: item.id,
+              first_name: item.first_name,
+              email: item.email,
+            })),
+            first_name: "",
+            email: "",
+          });
+          setPaging({
+            usersPerPage: response.data.per_page,
+            numberOfPages: response.data.total_pages,
+            totalUsers: response.data.total,
+            currentPage: paging.currentPage,
+          });
+        };
       } catch (error) {
         setIsLoading(false);
-        respError(error);
+        setError(getError(error));
       }
     };
     getUsers();
-  }, [currentPage]);
+  }, [paging.currentPage]);
 
   useEffect(() => {
     getUsersCallback();
@@ -64,16 +64,17 @@ function App() {
     try {
       setIsLoading(true);
       const response = await axios.delete(`/users/${id}`);
-      if (response) setIsLoading(false);
+      if (response) {
+        removeUserData(id);
+      } setIsLoading(false);
       console.log("response: ", response);
     } catch (error) {
       setIsLoading(false);
-      respError(error);
+      setError(getError(error));
     }
   };
 
   const removeUserData = (id) => {
-    removeUserDataAsync(id);
     const reducedItems = users.items.filter((item) => {
       return item !== id;
     });
@@ -90,7 +91,7 @@ function App() {
         users={users}
         setUsers={setUsers}
         setIsLoading={setIsLoading}
-        respError={respError}
+        setError={setError}
         editData={editData}
         setEditData={setEditData}
       />
@@ -98,11 +99,10 @@ function App() {
         users={users.items}
         isLoading={isLoading}
         error={error}
-        removeUserData={removeUserData}
+        removeUserDataAsync={removeUserDataAsync}
         setEditData={setEditData}
         paging={paging}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setPaging={setPaging}
       />
     </div>
   );
