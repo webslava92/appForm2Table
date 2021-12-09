@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { nanoid } from "nanoid";
 import axios from "./axios";
 import "../App.css";
-import {getError} from "../App"
+import { getError } from "../App";
 
 function Form({
   users,
@@ -40,55 +39,57 @@ function Form({
         first_name: users.first_name,
         email: users.email,
       });
-      if(response.data) {
+      if (response.data) {
+        const addUserData = () => {
+          const newItems = [
+            ...users.items,
+            {
+              id: response.data.id,
+              first_name: response.data.first_name,
+              email: response.data.email,
+            },
+          ];
+          setUsers({ items: newItems, first_name: "", email: "" });
+        };
         addUserData();
       }
-      console.log("response: ", response);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setError(getError(error));
     }
   };
-
-  const addUserData = () => {
-    const newItems = [
-      ...users.items,
-      { id: nanoid(), first_name: users.first_name, email: users.email },
-    ];
-    setUsers({ items: newItems, first_name: "", email: "" });
-  }
 
   const editUserDataAsync = async () => {
     try {
       setIsLoading(true);
       const response = await axios.put(`/users`, {
+        id: editData.id,
         first_name: editData.first_name,
         email: editData.email,
       });
-      if(response.data) {
+      if (response.data) {
+        const editUserData = () => {
+          const editItems = users.items.map((item) =>
+            item.id === response.data.id
+              ? {
+                  ...item,
+                  first_name: response.data.first_name,
+                  email: response.data.email,
+                }
+              : item
+          );
+          setUsers({ items: editItems, first_name: "", email: "" });
+        };
         editUserData();
       }
-      console.log("response: ", response);
+
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setError(getError(error));
     }
   };
-
-  const editUserData = () => {
-    const editItems = users.items.map((item) =>
-      item.id === editData.id
-        ? {
-            ...item,
-            first_name: editData.first_name,
-            email: editData.email,
-          }
-        : item
-    );
-    setUsers({ items: editItems, first_name: "", email: "" });
-  }
 
   const formSubmit = (e) => {
     e.preventDefault();

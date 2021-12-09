@@ -37,7 +37,10 @@ function Pagination({ users, paging, setPaging }) {
         </li>
         <li>of</li>
         <li className="pagination__all-pages">
-          {paging.totalUsers > users.length ? paging.totalUsers : users.length}
+          {paging.totalUsers <
+          (paging.currentPage - 1) * paging.usersPerPage + users.length
+            ? (paging.currentPage - 1) * paging.usersPerPage + users.length
+            : paging.totalUsers}
         </li>
         <li className="pagination__btns-control">
           <button

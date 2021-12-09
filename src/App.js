@@ -21,7 +21,7 @@ function App() {
     usersPerPage: 0,
     numberOfPages: 0,
     totalUsers: 0,
-    currentPage: 1
+    currentPage: 1,
   });
 
   const getUsersCallback = useCallback(() => {
@@ -46,7 +46,7 @@ function App() {
             totalUsers: response.data.total,
             currentPage: paging.currentPage,
           });
-        };
+        }
       } catch (error) {
         setIsLoading(false);
         setError(getError(error));
@@ -60,14 +60,13 @@ function App() {
   }, [getUsersCallback]);
 
   const removeUserDataAsync = async ({ id }) => {
-    console.log("id: ", { id });
     try {
       setIsLoading(true);
       const response = await axios.delete(`/users/${id}`);
       if (response) {
         removeUserData(id);
-      } setIsLoading(false);
-      console.log("response: ", response);
+      }
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       setError(getError(error));
@@ -78,6 +77,8 @@ function App() {
     const reducedItems = users.items.filter((item) => {
       return item !== id;
     });
+    console.log("id: ", id);
+    console.log("reducedItems: ", reducedItems);
     setUsers({
       items: reducedItems,
       first_name: users.first_name,
