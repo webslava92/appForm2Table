@@ -1,9 +1,9 @@
 import React from "react";
 import "../App.css";
-import User from "./User";
-import Pagination from "./Pagination";
+import {User} from "./User";
+import {Pagination} from "./Pagination";
 
-function Users({
+export function Table({
   users,
   isLoading,
   error,
@@ -13,7 +13,7 @@ function Users({
   setPaging,
 }) {
   return (
-    <div className="Users">
+    <div className="Table">
       {isLoading && <h2 className="loading">Data is being loaded...</h2>}
       {error && <h2 className="error">{error}</h2>}
       <table>
@@ -39,5 +39,3 @@ function Users({
     </div>
   );
 }
-
-export default Users;

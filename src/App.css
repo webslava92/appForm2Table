@@ -1,7 +1,52 @@
-* {
+html {
   box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+#root,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
   margin: 0;
   padding: 0;
+}
+
+ul[class] {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+#root {
+  width: 100%;
 }
 
 body {
@@ -9,8 +54,6 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 0 15px;
   background: linear-gradient(
     90deg,
     rgba(48, 16, 255, 1) 0%,
@@ -19,18 +62,85 @@ body {
 }
 
 h3 {
+  font-size: 24px;
   color: rgba(140, 1, 250, 1);
 }
 
-.App {
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.app__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 80px;
+}
+
+.menu {
+  width: 20%;
+  height: 100%;
+}
+
+ul.menu__items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+li.menu__item {
+  display: flex;
+  margin: 15px auto;
+}
+
+.menu__link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 60px;
+  text-decoration: none;
+  color: rgba(140, 1, 250, 1);
+  background-color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 4px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 10px rgba(140, 1, 250, 1);
+  transition: all 0.5s;
+}
+
+.menu__link:hover,
+.menu__link--active {
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+  border: 2px solid #fff;
+}
+
+.content {
+  width: 80%;
+  margin-left: 20px;
+}
+
+.Users {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 500px;
   text-align: center;
   background-color: #fff;
+  margin: 15px auto;
+  box-shadow: 0 0 10px rgba(140, 1, 250, 1);
 }
 
-.Users {
+.Table {
   width: 100%;
   padding: 15px;
   position: relative;
@@ -54,27 +164,22 @@ h3 {
   color: red;
 }
 
-.Users table {
+.Table table {
   width: 100%;
 }
 
-.ControlBtns {
-  display: flex;
-  flex-direction: column;
+.Table td {
+  border: 1px solid #ccc;
+  background-color: #efefef;
+  padding: 5px;
+  cursor: pointer;
 }
 
-.Users td {
-    border: 1px solid #ccc;
-    background-color: #efefef;
-    padding: 5px;
-    cursor: pointer;
-}
-
-.Users th {
-    width: 50%;
-    background-color: #ccc;;
-    padding: 5px;
-    cursor: pointer;
+.Table th {
+  width: 50%;
+  background-color: #ccc;
+  padding: 5px;
+  cursor: pointer;
 }
 
 #Form {
@@ -82,8 +187,8 @@ h3 {
 }
 
 #Form label {
-    display: block;
-    margin: 15px 0;
+  display: block;
+  margin: 15px 0;
 }
 
 #Form input {
@@ -109,7 +214,7 @@ h3 {
   font-weight: 700;
   margin-top: 10px;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
   color: #fff;
 }
 
@@ -117,9 +222,10 @@ h3 {
 .RemoveBtn:hover,
 .EditBtn:hover {
   background: linear-gradient(
-    90deg, 
-    rgba(93, 12, 255, 1) 0%, 
-    rgba(107, 77, 250, 1) 100%);
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(107, 77, 250, 1) 100%
+  );
 }
 
 .RemoveBtn,
@@ -139,7 +245,7 @@ h3 {
   background-color: #fff;
 }
 
-.user.selected td{
+.user.selected td {
   background-color: #fff;
   font-weight: bold;
   color: rgba(140, 1, 250, 1);
@@ -177,12 +283,11 @@ h3 {
   display: flex;
 }
 
-.pagination__btn-prev,
-.pagination__btn-next {
+button.pagination__btn-prev,
+button.pagination__btn-next {
   position: relative;
-  display: flex;
-  width:15px;
-  height: 15px;
+  width: 25px;
+  height: 25px;
   background-color: transparent;
   border: none;
   font-weight: 600;
@@ -222,8 +327,21 @@ h3 {
   fill: rgba(140, 1, 250, 1);
 }
 
+.Movies {
+  max-width: 500px;
+  width: 100%;
+  min-height: 500px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  margin: 15px auto;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(140, 1, 250, 1);
+}
+
 @media (max-width: 600px) {
-  .App {
+  .Users {
     width: 100%;
     min-width: 100%;
   }
@@ -231,4 +349,3 @@ h3 {
     padding: 15px 10px 30px;
   }
 }
-

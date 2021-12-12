@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 import "../App.css";
-import { getError } from "../App";
+import { getError } from "../Users";
 
 function Form({
   users,
@@ -116,7 +116,7 @@ function Form({
 
   return (
     <div id="Form">
-      <h3>Add user data:</h3>
+      <h3>Users</h3>
       <form onSubmit={formSubmit}>
         <input
           value={editData ? editData.first_name : users.first_name}
@@ -141,4 +141,4 @@ function Form({
     </div>
   );
 }
-export default Form;
+export {Form};

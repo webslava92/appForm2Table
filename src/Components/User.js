@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../App.css";
 
-function User({ users, removeUserDataAsync, setEditData }) {
+export function User({ users, removeUserDataAsync, setEditData }) {
   const [selected, setSelected] = useState(null);
 
   return users.map((item) => (
@@ -25,5 +25,3 @@ function User({ users, removeUserDataAsync, setEditData }) {
     </tr>
   ));
 }
-
-export default User;

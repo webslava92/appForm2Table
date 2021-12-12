@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 
-function Pagination({ users, paging, setPaging }) {
+export function Pagination({ users, paging, setPaging }) {
   const activeNextBtn =
     paging.numberOfPages > paging.currentPage ? true : false;
   const activePrevBtn = paging.currentPage - 1 !== 0 ? true : false;
@@ -51,7 +51,7 @@ function Pagination({ users, paging, setPaging }) {
             }
             onClick={prevPage}
           >
-            <svg viewBox="0 0 20 20" height="20px" width="20px">
+            <svg viewBox="0 0 25 20" height="25px" width="20px">
               <path fill="none" d="M0 0h20v20H0z"></path>
               <path d="M17.77 3.77L16 2 6 12l10 10 1.77-1.77L9.54 12z"></path>
             </svg>
@@ -64,7 +64,7 @@ function Pagination({ users, paging, setPaging }) {
             }
             onClick={nextPage}
           >
-            <svg viewBox="0 0 20 20" height="20px" width="20px">
+            <svg viewBox="0 0 25 20" height="25px" width="20px">
               <path fill="none" d="M0 0h20v20H0V0z"></path>
               <path d="M6.23 20.23L8 22l10-10L8 2 6.23 3.77 14.46 12z"></path>
             </svg>
@@ -74,5 +74,3 @@ function Pagination({ users, paging, setPaging }) {
     </div>
   );
 }
-
-export default Pagination;
