@@ -1,7 +1,7 @@
 import React from "react";
-import "../App.css";
+import "../../App.css";
 
-export function Pagination({ users, paging, setPaging }) {
+export function UsersPagination({ users, paging, setPaging }) {
   const activeNextBtn =
     paging.numberOfPages > paging.currentPage ? true : false;
   const activePrevBtn = paging.currentPage - 1 !== 0 ? true : false;

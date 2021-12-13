@@ -140,7 +140,7 @@ li.menu__item {
   box-shadow: 0 0 10px rgba(140, 1, 250, 1);
 }
 
-.Table {
+.UsersTable {
   width: 100%;
   padding: 15px;
   position: relative;
@@ -150,32 +150,23 @@ li.menu__item {
   color: rgba(140, 1, 250, 1);
 }
 
-.loading,
-.error {
+.loading {
   align-items: center;
   color: rgba(140, 1, 250, 1);
 }
 
-.loading {
-  color: rgba(140, 1, 250, 1);
-}
-
-.error {
-  color: red;
-}
-
-.Table table {
+.UsersTable table {
   width: 100%;
 }
 
-.Table td {
+.UsersTable td {
   border: 1px solid #ccc;
   background-color: #efefef;
   padding: 5px;
   cursor: pointer;
 }
 
-.Table th {
+.UsersTable th {
   width: 50%;
   background-color: #ccc;
   padding: 5px;
@@ -237,6 +228,12 @@ li.menu__item {
 
 .ErrorMessage {
   font-size: 10px;
+  font-weight: bold;
+  color: red;
+}
+
+.SubmitError {
+  font-size: 16px;
   font-weight: bold;
   color: red;
 }
@@ -345,7 +342,7 @@ button.pagination__btn-next {
     width: 100%;
     min-width: 100%;
   }
-  .Table {
+  .UsersTable {
     padding: 15px 10px 30px;
   }
 }

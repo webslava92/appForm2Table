@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../App.css";
+import "../../App.css";
 
 export function User({ users, removeUserDataAsync, setEditData }) {
   const [selected, setSelected] = useState(null);

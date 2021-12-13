@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import "./App.css";
-import {Form} from "./Components/Form";
-import {Table} from "./Components/Table";
+import { UsersForm } from "./Components/Users/UsersForm";
+import { UsersTable } from "./Components/Users/UsersTable";
 import axios from "./Components/axios";
-
-export function getError(error) {
-  return error.response || error.request ? "Response error" : "Undefined error";
-}
+import { getError } from "./Components/respError";
 
 export function Users() {
   const [users, setUsers] = useState({
     items: [],
+    id: "",
     first_name: "",
     email: "",
   });
@@ -38,6 +36,7 @@ export function Users() {
               first_name: item.first_name,
               email: item.email,
             })),
+            id: "",
             first_name: "",
             email: "",
           });
@@ -60,9 +59,35 @@ export function Users() {
     getUsersCallback();
   }, [getUsersCallback]);
 
+  const addUserData = (addItem) => {
+    const newItems = [
+      ...users.items,
+      {
+        id: addItem.id,
+        first_name: addItem.first_name,
+        email: addItem.email,
+      },
+    ];
+    setUsers({ items: newItems, first_name: "", email: "" });
+  };
+
+  const editUserData = (editItem) => {
+    const editItems = users.items.map((item) =>
+      item.id === editItem.id
+        ? {
+            ...item,
+            id: editItem.id,
+            first_name: editItem.first_name,
+            email: editItem.email,
+          }
+        : item
+    );
+    setUsers({ items: editItems, first_name: "", email: "" });
+  };
+
   const removeUserDataAsync = async ({ id }) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await axios.delete(`/users/${id}`);
       if (response) {
         const reducedItems = users.items.filter((user) => {
@@ -70,6 +95,7 @@ export function Users() {
         });
         setUsers({
           items: reducedItems,
+          id: "",
           first_name: users.first_name,
           email: users.email,
         });
@@ -83,15 +109,17 @@ export function Users() {
 
   return (
     <div className="Users">
-      <Form
+      <UsersForm
         users={users}
         setUsers={setUsers}
         setIsLoading={setIsLoading}
         setError={setError}
         editData={editData}
         setEditData={setEditData}
+        addUserData={addUserData}
+        editUserData={editUserData}
       />
-      <Table
+      <UsersTable
         users={users.items}
         isLoading={isLoading}
         error={error}

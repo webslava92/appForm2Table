@@ -10,8 +10,8 @@ export function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="Users" element={<Users />} />
-          <Route path="Movies" element={<Movies />} />
+          <Route path="users" element={<Users />} />
+          <Route path="movies" element={<Movies />} />
         </Route>
       </Routes>
     </div>

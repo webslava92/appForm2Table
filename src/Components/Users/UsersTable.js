@@ -1,9 +1,9 @@
 import React from "react";
-import "../App.css";
+import "../../App.css";
 import {User} from "./User";
-import {Pagination} from "./Pagination";
+import { UsersPagination } from "./UsersPagination";
 
-export function Table({
+export function UsersTable({
   users,
   isLoading,
   error,
@@ -13,9 +13,9 @@ export function Table({
   setPaging,
 }) {
   return (
-    <div className="Table">
+    <div className="UsersTable">
       {isLoading && <h2 className="loading">Data is being loaded...</h2>}
-      {error && <h2 className="error">{error}</h2>}
+      {error && <h2 className="SubmitError">Response error</h2>}
       <table>
         <thead>
           <tr>
@@ -34,7 +34,7 @@ export function Table({
       </table>
       {!users.length && <h2 className="nousers">No Users data found!</h2>}
       <div className="pagination__wrap">
-        <Pagination users={users} paging={paging} setPaging={setPaging} />
+        <UsersPagination users={users} paging={paging} setPaging={setPaging} />
       </div>
     </div>
   );

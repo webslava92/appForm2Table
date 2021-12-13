@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import axios from "./axios";
-import "../App.css";
-import { getError } from "../Users";
+import axios from "../axios";
+import "../../App.css";
+import { getError } from "../respError";
 
-function Form({
-  users,
-  setIsLoading,
-  setError,
-  setUsers,
-  editData,
-  setEditData,
-}) {
+export function UsersForm({ users, setIsLoading, setUsers, editData, setEditData, addUserData, editUserData }) {
   const [stateError, setStateError] = useState({
     firstNameError: "",
     emailError: "",
+    submitError: "",
   });
 
   const validate = () => {
@@ -26,68 +20,63 @@ function Form({
       emailError = "Incorrect Email";
     }
     if (firstNameError || emailError) {
-      setStateError({ firstNameError, emailError });
+      setStateError({ firstNameError, emailError, submitError: "" });
       return false;
     }
     return true;
   };
 
   const addUserDataAsync = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await axios.post(`/users`, {
         first_name: users.first_name,
         email: users.email,
       });
       if (response.data) {
-        const addUserData = () => {
-          const newItems = [
-            ...users.items,
-            {
-              id: response.data.id,
-              first_name: response.data.first_name,
-              email: response.data.email,
-            },
-          ];
-          setUsers({ items: newItems, first_name: "", email: "" });
+        const addItem = {
+          id: response.data.id,
+          first_name: response.data.first_name,
+          email: response.data.email,
         };
-        addUserData();
+        addUserData(addItem);
       }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setError(getError(error));
+      setStateError({
+        firstNameError: stateError.firstNameError,
+        emailError: stateError.emailError,
+        submitError: getError(error),
+      });
     }
   };
 
   const editUserDataAsync = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const response = await axios.put(`/users`, {
         id: editData.id,
         first_name: editData.first_name,
         email: editData.email,
       });
       if (response.data) {
-        const editUserData = () => {
-          const editItems = users.items.map((item) =>
-            item.id === response.data.id
-              ? {
-                  ...item,
-                  first_name: response.data.first_name,
-                  email: response.data.email,
-                }
-              : item
-          );
-          setUsers({ items: editItems, first_name: "", email: "" });
+        const editItem = {
+          id: response.data.id,
+          first_name: response.data.first_name,
+          email: response.data.email,
         };
-        editUserData();
+        editUserData(editItem);
       }
 
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setError(getError(error));
+      setStateError({
+        firstNameError: stateError.firstNameError,
+        emailError: stateError.emailError,
+        submitError: getError(error),
+      });
     }
   };
 
@@ -100,7 +89,7 @@ function Form({
       } else {
         addUserDataAsync();
       }
-      setStateError({ firstNameError: "", emailError: "" });
+      setStateError({ firstNameError: "", emailError: "", submitError: "" });
       setEditData();
     }
   };
@@ -137,8 +126,12 @@ function Form({
         <button type="submit" value="Submit">
           Send
         </button>
+        {stateError.submitError ? (
+          <h2 className="SubmitError">{stateError.submitError}</h2>
+        ) : (
+          ""
+        )}
       </form>
     </div>
   );
 }
-export {Form};
