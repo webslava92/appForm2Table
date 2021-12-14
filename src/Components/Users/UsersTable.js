@@ -5,8 +5,8 @@ import { UsersPagination } from "./UsersPagination";
 
 export function UsersTable({
   users,
+  errorResp,
   isLoading,
-  error,
   removeUserDataAsync,
   setEditData,
   paging,
@@ -15,7 +15,7 @@ export function UsersTable({
   return (
     <div className="UsersTable">
       {isLoading && <h2 className="loading">Data is being loaded...</h2>}
-      {error && <h2 className="SubmitError">Response error</h2>}
+      {errorResp && <h2 className="SubmitError">Response error</h2>}
       <table>
         <thead>
           <tr>

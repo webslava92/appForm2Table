@@ -3,7 +3,15 @@ import axios from "../axios";
 import "../../App.css";
 import { getError } from "../respError";
 
-export function UsersForm({ users, setIsLoading, setUsers, editData, setEditData, addUserData, editUserData }) {
+export function UsersForm({
+  users,
+  setUsers,
+  setIsLoading,
+  editData,
+  setEditData,
+  addUserData,
+  editUserData,
+}) {
   const [stateError, setStateError] = useState({
     firstNameError: "",
     emailError: "",
@@ -104,7 +112,7 @@ export function UsersForm({ users, setIsLoading, setUsers, editData, setEditData
   };
 
   return (
-    <div id="Form">
+    <div id="UsersForm">
       <h3>Users</h3>
       <form onSubmit={formSubmit}>
         <input
@@ -126,12 +134,12 @@ export function UsersForm({ users, setIsLoading, setUsers, editData, setEditData
         <button type="submit" value="Submit">
           Send
         </button>
-        {stateError.submitError ? (
-          <h2 className="SubmitError">{stateError.submitError}</h2>
-        ) : (
-          ""
-        )}
       </form>
+      {stateError.submitError ? (
+        <h2 className="SubmitError">{stateError.submitError}</h2>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

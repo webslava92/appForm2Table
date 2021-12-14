@@ -133,7 +133,8 @@ li.menu__item {
 .Users {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 500px;
+  max-width: 500px;
+  width: 100%;
   text-align: center;
   background-color: #fff;
   margin: 15px auto;
@@ -166,30 +167,33 @@ li.menu__item {
   cursor: pointer;
 }
 
+.UsersTable tr td:last-child {
+  max-width: 65px;
+} 
+
 .UsersTable th {
-  width: 50%;
   background-color: #ccc;
   padding: 5px;
   cursor: pointer;
 }
 
-#Form {
+#UsersForm {
   padding: 15px;
 }
 
-#Form label {
+#UsersForm label {
   display: block;
   margin: 15px 0;
 }
 
-#Form input {
+#UsersForm input {
   width: 100%;
   padding: 15px;
   margin-top: 10px;
   border: 1px solid #ccc;
 }
 
-#Form button,
+#UsersForm button,
 .RemoveBtn,
 .EditBtn {
   width: 100%;
@@ -209,7 +213,7 @@ li.menu__item {
   color: #fff;
 }
 
-#Form button:hover,
+#UsersForm button:hover,
 .RemoveBtn:hover,
 .EditBtn:hover {
   background: linear-gradient(
@@ -224,6 +228,7 @@ li.menu__item {
   padding: 5px;
   font-size: 10px;
   margin: 2px 0;
+  max-width: 60px;
 }
 
 .ErrorMessage {
@@ -327,14 +332,94 @@ button.pagination__btn-next {
 .Movies {
   max-width: 500px;
   width: 100%;
-  min-height: 500px;
   background-color: #fff;
-  display: flex;
-  justify-content: center;
   border-radius: 4px;
   margin: 15px auto;
-  padding: 15px;
+  text-align: center;
   box-shadow: 0 0 10px rgba(140, 1, 250, 1);
+}
+
+.MoviesForm {
+  padding: 15px;
+}
+
+.MoviesForm input {
+  width: 80%;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.MoviesForm button {
+  width: calc(20% - 10px);
+  padding: 15px;
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  );
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 0 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+.MoviesForm button:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgba(107, 77, 250, 1) 100%
+  );
+}
+
+.MoviesTable {
+  width: 100%;
+  padding: 15px;
+  position: relative;
+}
+
+.MoviesTable table {
+  width: 100%;
+}
+
+.MoviesTable td {
+  border: 1px solid #ccc;
+  background-color: #efefef;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.MoviesTable th {
+  background-color: #ccc;
+  padding: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .app__wrapper {
+    flex-direction: column;
+    margin-top: 40px;
+  }
+  .menu {
+    width: 100%;
+  }
+  ul.menu__items {
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  li.menu__item {
+    margin: 0;
+  }
+  .content {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 600px) {
@@ -344,5 +429,31 @@ button.pagination__btn-next {
   }
   .UsersTable {
     padding: 15px 10px 30px;
+  }
+}
+
+@media (max-width: 450px) {
+  .menu__link {
+    width: 120px;
+    height: 40px;
+  }
+
+  .UsersTable td {
+    font-size: 14px;
+  }
+
+  .UsersTable th {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 350px) {
+
+  .UsersTable td {
+    font-size: 12px;
+  }
+
+  .UsersTable th {
+    font-size: 12px;
   }
 }

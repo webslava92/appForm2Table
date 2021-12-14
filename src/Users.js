@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import "./App.css";
-import { UsersForm } from "./Components/Users/UsersForm";
-import { UsersTable } from "./Components/Users/UsersTable";
+import { UsersForm } from "./Components/users/UsersForm";
+import { UsersTable } from "./Components/users/UsersTable";
 import axios from "./Components/axios";
 import { getError } from "./Components/respError";
 
@@ -14,7 +14,7 @@ export function Users() {
     email: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [errorResp, setErrorResp] = useState();
   const [editData, setEditData] = useState();
   const [paging, setPaging] = useState({
     usersPerPage: 0,
@@ -49,7 +49,7 @@ export function Users() {
         }
       } catch (error) {
         setIsLoading(false);
-        setError(getError(error));
+        setErrorResp(getError(error));
       }
     };
     getUsers();
@@ -103,7 +103,8 @@ export function Users() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      setError(getError(error));
+      
+      setErrorResp(getError(error));
     }
   };
 
@@ -113,7 +114,6 @@ export function Users() {
         users={users}
         setUsers={setUsers}
         setIsLoading={setIsLoading}
-        setError={setError}
         editData={editData}
         setEditData={setEditData}
         addUserData={addUserData}
@@ -121,8 +121,8 @@ export function Users() {
       />
       <UsersTable
         users={users.items}
+        errorResp={errorResp}
         isLoading={isLoading}
-        error={error}
         removeUserDataAsync={removeUserDataAsync}
         setEditData={setEditData}
         paging={paging}

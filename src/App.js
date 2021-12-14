@@ -1,8 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
-import {Users} from "./Users";
-import {Movies} from "./Movies";
+import { Users } from "./Users";
+import { Movies } from "./Movies";
 import { Layout } from "./Components/Layout";
 
 export function App() {
