@@ -333,6 +333,7 @@ button.pagination__btn-next {
   max-width: 500px;
   width: 100%;
   background-color: #fff;
+  border: 1px solid #ccc;
   border-radius: 4px;
   margin: 15px auto;
   text-align: center;
@@ -344,14 +345,14 @@ button.pagination__btn-next {
 }
 
 .MoviesForm input {
-  width: 80%;
+  width: 70%;
   padding: 15px;
   margin-top: 10px;
   border: 1px solid #ccc;
 }
 
 .MoviesForm button {
-  width: calc(20% - 10px);
+  width: calc(30% - 10px);
   padding: 15px;
   background: linear-gradient(
     90deg,

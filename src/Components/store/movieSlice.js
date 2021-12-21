@@ -2,6 +2,11 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 import { Movies } from "../../Movies";
 import moviesData from "./moviesData.json";
 
+const generateNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+
 const movieSlice = createSlice({
   name: "movies",
   initialState: {
@@ -14,9 +19,9 @@ const movieSlice = createSlice({
 
       state.movies.push({
         id: nanoid(),
-        name: "",
-        rating: "",
-        watched: false,
+        movieName: action.payload,
+        rating: generateNumber(1, 5),
+        watched: generateNumber(0, 1),
       });
     },
   },

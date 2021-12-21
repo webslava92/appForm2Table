@@ -1,34 +1,34 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
+import Checkbox from "@mui/material/Checkbox";
+
 import "../../App.css";
+
 
 export function Movie() {
   const movies = useSelector((state) => state.movies.movies);
 
   return movies.map((item) => (
     <tr key={item.id}>
-      <td>{item.name}</td>
+      <td>{item.movieName}</td>
       <td>
-        <select type={"select"} name={"rating"}>
-          <option selected={item.rating === 1 ? true : false} value={"1"}>
-            1
-          </option>
-          <option selected={item.rating === 2 ? true : false} value={"2"}>
-            2
-          </option>
-          <option selected={item.rating === 3 ? true : false} value={"3"}>
-            3
-          </option>
-          <option selected={item.rating === 4 ? true : false} value={"4"}>
-            4
-          </option>
-          <option selected={item.rating === 5 ? true : false} value={"5"}>
-            5
-          </option>
-        </select>
+        <Box >
+          <Typography component="legend"></Typography>
+          <Rating name="read-only" value={item.rating} size="small" readOnly />
+        </Box>
       </td>
       <td>
-        <input type={"checkbox"} name={"watched"} checked={item.watched} />
+        <Checkbox
+          inputProps={{ "aria-label": "Checkbox demo" }}
+          name={"watched"}
+          background={"rgba(57,75,89,.5)"}
+          disabled
+          checked={item.watched}
+          size="small"
+        />
       </td>
     </tr>
   ));
