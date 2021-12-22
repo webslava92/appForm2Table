@@ -2,7 +2,7 @@ import React from "react";
 import "../../App.css";
 import { Movie } from "./Movie";
 
-export function MoviesTable({}) {
+export function MoviesTable() {
   return (
     <div className="MoviesTable">
       <table>

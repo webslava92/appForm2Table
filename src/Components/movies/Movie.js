@@ -2,11 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
 import Checkbox from "@mui/material/Checkbox";
 
 import "../../App.css";
-
 
 export function Movie() {
   const movies = useSelector((state) => state.movies.movies);
@@ -15,8 +13,7 @@ export function Movie() {
     <tr key={item.id}>
       <td>{item.movieName}</td>
       <td>
-        <Box >
-          <Typography component="legend"></Typography>
+        <Box>
           <Rating name="read-only" value={item.rating} size="small" readOnly />
         </Box>
       </td>

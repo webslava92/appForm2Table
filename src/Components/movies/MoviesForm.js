@@ -1,28 +1,40 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import {useDispatch} from "react-redux"
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
 import "../../App.css";
 
-import { addMovie } from "../store/movieSlice";
+import { addNewMovie } from "../store/movieSlice";
 
-export function MoviesForm({}) {
-  const movies = useSelector((state) => state.movies.movies);
+export function MoviesForm() {
+  const[inputValue, setInputValue] = useState('');
+  
   const dispatch = useDispatch();
 
-  const addVideo = () => dispatch(addMovie(movies));
+  const addNewItem = (e) => {
+    e.preventDefault();
+    dispatch(
+      addNewMovie({
+        movieName: inputValue,
+      })
+    );
+    setInputValue('');
+  };
 
   return (
     <div className="MoviesForm">
       <h3>Movies</h3>
-      <form onClick={addVideo}>
-        <input
-          value={movies.movieName}
-          onChange={(e) => addMovie(e.target.value)}
+      <Box component="form" onSubmit={addNewItem}>
+        <TextField
+          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValue}
+          placeholder="Input movie name"
         />
-        <button type="submit" value="Submit">
+        <Button type="submit">
           Add Video
-        </button>
-      </form>
+        </Button>
+      </Box>
     </div>
   );
 }
