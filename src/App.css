@@ -230,6 +230,14 @@ li.menu__item {
   );
 }
 
+.movieWatched--disable {
+  background: #ccc;
+}
+
+.movieWatched--disable:hover {
+  background: #ccc;
+}
+
 .RemoveBtn,
 .EditBtn {
   padding: 5px;

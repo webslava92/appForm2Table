@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { editMovie, addNewMovie } from "../store/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
@@ -15,19 +15,27 @@ export function MoviesForm() {
   const movies = useSelector((state) =>
     state.movies.movies.find((item) => item.editStatus)
   );
+
+  useEffect(() => {
+    if (movies) {
+      setEditNameValue(movies.movieName);
+      setEditRatingValue(movies.rating);
+    }
+  }, [movies]);
   
   const dispatch = useDispatch();
 
-  console.log("name:", nameValue, "rating:", ratingValue);
-  console.log("edit name:", editNameValue, "edit rating:", editRatingValue);
-  console.log("movies:", movies);
-  console.log("movies rating:", movies ? movies.rating : 0);
+  // console.log("name:", nameValue, "rating:", ratingValue);
+  // console.log("edit name:", editNameValue, "edit rating:", editRatingValue);
+  // console.log("movies:", movies);
+  // console.log("movies rating:", movies ? movies.rating : 0);
 
   function submitForm (e) {
     e.preventDefault();
     if (movies) {
       dispatch(
         editMovie({
+          id: movies.id,
           movieName: editNameValue,
           rating: editRatingValue,
         })

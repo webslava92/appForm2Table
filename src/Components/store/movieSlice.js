@@ -17,6 +17,7 @@ const movieSlice = createSlice({
     },
 
     editMovieStatus(state, action) {
+      state.movies.map((movie) => movie.editStatus = false);
       const editMovieStatus = state.movies.find(
         (movie) => movie.id === action.payload
       );
@@ -25,9 +26,11 @@ const movieSlice = createSlice({
 
     editMovie(state, action) {
       const editMovie = state.movies.find(
-        (movie) => movie.id === action.payload
+        (movie) => movie.id === action.payload.id
       );
-      
+      editMovie.movieName = action.payload.movieName;
+      editMovie.rating = action.payload.rating;
+      editMovie.editStatus = false;
     },
 
     removeMovie(state, action) {
@@ -40,7 +43,9 @@ const movieSlice = createSlice({
       const watchedMovieStatus = state.movies.find(
         (movie) => movie.id === action.payload
       );
-      watchedMovieStatus.watched = !watchedMovieStatus.watched;
+      watchedMovieStatus.watched
+        ? (watchedMovieStatus.watched = watchedMovieStatus.watched)
+        : (watchedMovieStatus.watched = !watchedMovieStatus.watched);
     },
   },
 });

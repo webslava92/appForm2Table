@@ -21,7 +21,7 @@
     "id": 4,
     "movieName": "Video #4",
     "rating": 1,
-    "watched": true
+    "watched": false
   },
   {
     "id": 5,

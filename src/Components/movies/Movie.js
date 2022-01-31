@@ -16,6 +16,7 @@ export function Movie() {
   const movies = useSelector((state) => state.movies.movies);
   const dispatch = useDispatch();
 
+
   return movies.map((item) => (
     <tr key={item.id}>
       <td>{item.movieName}</td>
@@ -34,7 +35,9 @@ export function Movie() {
       </td>
       <td className="action-btns">
         <button
-          className="movieWatched"
+          className={
+            item.watched ? "movieWatched movieWatched--disable" : "movieWatched"
+          }
           onClick={() => dispatch(watchedMovie(item.id))}
         >
           <AddTaskIcon fontSize="small" />
