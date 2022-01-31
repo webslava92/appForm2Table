@@ -1,40 +1,73 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
+import { React, useState } from "react";
+import { addNewMovie } from "../store/movieSlice";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
+import Rating from "@mui/material/Rating";
 import "../../App.css";
 
-import { addNewMovie } from "../store/movieSlice";
-
 export function MoviesForm() {
-  const[inputValue, setInputValue] = useState('');
-  
+  const [nameValue, setNameValue] = useState("");
+  const [ratingValue, setRatingValue] = useState(0);
+
+  const movies = useSelector((state) => state.movies.movies);
   const dispatch = useDispatch();
 
   const addNewItem = (e) => {
     e.preventDefault();
     dispatch(
       addNewMovie({
-        movieName: inputValue,
+        movieName: nameValue,
+        rating: ratingValue,
       })
     );
-    setInputValue('');
+    setNameValue("");
+    setRatingValue(0);
+  };
+
+  const movieNameChange = (e) => {
+    e.preventDefault();
+    movies.filter((item) =>
+      item.editStatus === true
+        ? setNameValue(item.movieName)
+        : setNameValue(e.target.value)
+    );
+  };
+
+  const movieRatingChange = (e) => {
+    e.preventDefault();
+    movies.filter((item) =>
+      item.editStatus === true
+        ? setRatingValue(item.rating)
+        : setRatingValue(Number(e.target.value))
+    );
   };
 
   return (
     <div className="MoviesForm">
       <h3>Movies</h3>
-      <Box component="form" onSubmit={addNewItem}>
-        <TextField
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-          placeholder="Input movie name"
-        />
-        <Button type="submit">
-          Add Video
-        </Button>
-      </Box>
+      <form onSubmit={addNewItem}>
+        <div className="form__inner">
+          <div className="formInputWrapper">
+            <TextField
+              name="nameValue"
+              onChange={movieNameChange}
+              value={nameValue}
+              placeholder="Input movie name"
+            />
+            <div className="rating__box">
+              <p>Choose a movie rating</p>
+              <Rating
+                name="ratingValue"
+                size="small"
+                onChange={movieRatingChange}
+                value={ratingValue}
+              />
+            </div>
+          </div>
+          <Button type="submit">Add Video</Button>
+        </div>
+      </form>
     </div>
   );
 }

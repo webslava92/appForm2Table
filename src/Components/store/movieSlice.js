@@ -1,31 +1,44 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import moviesData from "./moviesData.json";
 
-const randomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const randomBoolean = Math.random() < 0.5;
-
 const movieSlice = createSlice({
   name: "movies",
   initialState: {
-    movies: moviesData
+    movies: moviesData,
   },
   reducers: {
     addNewMovie(state, action) {
-      console.log(state);
-      console.log(action);
-
       state.movies.push({
         id: nanoid(),
         movieName: action.payload.movieName,
-        rating: randomNumber(1, 5),
-        watched: randomBoolean,
+        rating: action.payload.rating,
+        watched: false,
       });
+    },
+
+    editMovie(state, action) {
+      const editMovieStatus = state.movies.find((movie) =>
+        movie.id === action.payload
+      );
+      editMovieStatus.editStatus = true;
+    },
+
+
+    removeMovie(state, action) {
+      state.movies = state.movies.filter(
+        (movie) => movie.id !== action.payload
+      );
+    },
+
+    watchedMovie(state, action) {
+      const watchedMovieStatus = state.movies.find(
+        (movie) => movie.id === action.payload
+      );
+      watchedMovieStatus.watched = !watchedMovieStatus.watched;
     },
   },
 });
 
-export const { addNewMovie } = movieSlice.actions;
+export const { addNewMovie, editMovie, removeMovie, watchedMovie } =
+  movieSlice.actions;
 export default movieSlice.reducer;

@@ -169,7 +169,7 @@ li.menu__item {
 
 .UsersTable tr td:last-child {
   max-width: 65px;
-} 
+}
 
 .UsersTable th {
   background-color: #ccc;
@@ -196,7 +196,10 @@ li.menu__item {
 
 #UsersForm button,
 .RemoveBtn,
-.EditBtn {
+.EditBtn,
+.movieWatched,
+.movieRemoveBtn,
+.movieEditBtn {
   width: 100%;
   padding: 15px;
   background: linear-gradient(
@@ -216,7 +219,10 @@ li.menu__item {
 
 #UsersForm button:hover,
 .RemoveBtn:hover,
-.EditBtn:hover {
+.EditBtn:hover,
+.movieWatched:hover,
+.movieRemoveBtn:hover,
+.movieEditBtn:hover {
   background: linear-gradient(
     90deg,
     rgba(93, 12, 255, 1) 0%,
@@ -230,6 +236,21 @@ li.menu__item {
   font-size: 10px;
   margin: 2px 0;
   max-width: 60px;
+}
+
+.movieEditBtn,
+.movieRemoveBtn {
+  max-width: 45px;
+  padding: 3px;
+  font-size: 8px;
+  margin: 2px;
+}
+
+.movieWatched {
+  max-width: 45px;
+  padding: 2px;
+  font-size: 8px;
+  margin: 2px;
 }
 
 .ErrorMessage {
@@ -353,19 +374,15 @@ button.pagination__btn-next {
   align-items: center;
 }
 
-
-.MuiFormControl-root {
-  width: 70%;
-}
-
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   border-radius: 4px !important;
   border: 1px solid #ccc !important;
+  padding: 12px !important;
 }
 
 .MoviesForm button {
-  width: calc(30% - 10px);
-  padding: 15px;
+  width: calc(20% - 10px);
+  padding: 5px;
   background: linear-gradient(
     90deg,
     rgba(93, 12, 255, 1) 0%,
@@ -413,6 +430,37 @@ button.pagination__btn-next {
   cursor: pointer;
 }
 
+.Actions_title {
+  width: 90px;
+}
+
+.action-btns {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  min-height: 50px;
+}
+
+.form__inner {
+  display: flex;
+  flex-direction: row;
+}
+
+.formInputWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.rating__box {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.rating__box p {
+  margin: 0 20px 0 15px;
+}
 
 @media (max-width: 992px) {
   .app__wrapper {
@@ -463,7 +511,6 @@ button.pagination__btn-next {
 }
 
 @media (max-width: 350px) {
-
   .UsersTable td {
     font-size: 12px;
   }

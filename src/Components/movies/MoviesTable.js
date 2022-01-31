@@ -1,6 +1,6 @@
 import React from "react";
-import "../../App.css";
 import { Movie } from "./Movie";
+import "../../App.css";
 
 export function MoviesTable() {
   return (
@@ -11,6 +11,7 @@ export function MoviesTable() {
             <th>Name</th>
             <th>Rating</th>
             <th>Watched</th>
+            <th className="Actions_title">Actions</th>
           </tr>
         </thead>
         <tbody>
