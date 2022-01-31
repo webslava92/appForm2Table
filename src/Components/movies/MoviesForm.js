@@ -7,20 +7,21 @@ import Rating from "@mui/material/Rating";
 import "../../App.css";
 
 export function MoviesForm() {
-  const movies = useSelector((state) =>
-    state.movies.movies.find((item) => item.editStatus)
-  );
-
   const [nameValue, setNameValue] = useState("");
   const [ratingValue, setRatingValue] = useState(0);
   const [editNameValue, setEditNameValue] = useState("");
   const [editRatingValue, setEditRatingValue] = useState(0);
+
+  const movies = useSelector((state) =>
+    state.movies.movies.find((item) => item.editStatus)
+  );
   
   const dispatch = useDispatch();
 
-  console.log(nameValue, ratingValue);
-  console.log(editNameValue, editRatingValue);
-  console.log(movies);
+  console.log("name:", nameValue, "rating:", ratingValue);
+  console.log("edit name:", editNameValue, "edit rating:", editRatingValue);
+  console.log("movies:", movies);
+  console.log("movies rating:", movies ? movies.rating : 0);
 
   function submitForm (e) {
     e.preventDefault();
@@ -47,12 +48,22 @@ export function MoviesForm() {
 
   const inputNameChange = (e) => {
     e.preventDefault();
-    setNameValue(e.target.value)
+    let value = e.target.value;
+    if (movies) {
+      setEditNameValue(value);
+    } else {
+      setNameValue(value);
+    }
   };
 
   const inputRatingChange = (e) => {
     e.preventDefault();
-    setRatingValue(Number(e.target.value));
+    let value = Number(e.target.value);
+    if (movies) {
+      setEditRatingValue(value);
+    } else {
+      setRatingValue(value);
+    }
   };
 
   return (
