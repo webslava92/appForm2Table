@@ -1,5 +1,9 @@
 import React from "react";
-import { editMovie, removeMovie, watchedMovie,  } from "../store/movieSlice";
+import {
+  editMovieStatus,
+  removeMovie,
+  watchedMovie,
+} from "../store/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import Checkbox from "@mui/material/Checkbox";
@@ -37,7 +41,7 @@ export function Movie() {
         </button>
         <button
           className="movieEditBtn"
-          onClick={() => dispatch(editMovie(item.id))}
+          onClick={() => dispatch(editMovieStatus(item.id))}
         >
           <BorderColorIcon fontSize="small" />
         </button>

@@ -16,13 +16,19 @@ const movieSlice = createSlice({
       });
     },
 
-    editMovie(state, action) {
-      const editMovieStatus = state.movies.find((movie) =>
-        movie.id === action.payload
+    editMovieStatus(state, action) {
+      const editMovieStatus = state.movies.find(
+        (movie) => movie.id === action.payload
       );
       editMovieStatus.editStatus = true;
     },
 
+    editMovie(state, action) {
+      const editMovie = state.movies.find(
+        (movie) => movie.id === action.payload
+      );
+      
+    },
 
     removeMovie(state, action) {
       state.movies = state.movies.filter(
@@ -39,6 +45,6 @@ const movieSlice = createSlice({
   },
 });
 
-export const { addNewMovie, editMovie, removeMovie, watchedMovie } =
+export const { addNewMovie, editMovieStatus, editMovie, removeMovie, watchedMovie } =
   movieSlice.actions;
 export default movieSlice.reducer;

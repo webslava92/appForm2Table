@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { addNewMovie } from "../store/movieSlice";
+import { editMovie, addNewMovie } from "../store/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -7,52 +7,64 @@ import Rating from "@mui/material/Rating";
 import "../../App.css";
 
 export function MoviesForm() {
+  const movies = useSelector((state) =>
+    state.movies.movies.find((item) => item.editStatus)
+  );
+
   const [nameValue, setNameValue] = useState("");
   const [ratingValue, setRatingValue] = useState(0);
-
-  const movies = useSelector((state) => state.movies.movies);
+  const [editNameValue, setEditNameValue] = useState("");
+  const [editRatingValue, setEditRatingValue] = useState(0);
+  
   const dispatch = useDispatch();
 
-  const addNewItem = (e) => {
+  console.log(nameValue, ratingValue);
+  console.log(editNameValue, editRatingValue);
+  console.log(movies);
+
+  function submitForm (e) {
     e.preventDefault();
-    dispatch(
-      addNewMovie({
-        movieName: nameValue,
-        rating: ratingValue,
-      })
-    );
-    setNameValue("");
-    setRatingValue(0);
+    if (movies) {
+      dispatch(
+        editMovie({
+          movieName: editNameValue,
+          rating: editRatingValue,
+        })
+      );
+      setEditNameValue("");
+      setEditRatingValue(0);
+    } else {
+      dispatch(
+        addNewMovie({
+          movieName: nameValue,
+          rating: ratingValue,
+        })
+      );
+      setNameValue("");
+      setRatingValue(0);
+    }
+  }
+
+  const inputNameChange = (e) => {
+    e.preventDefault();
+    setNameValue(e.target.value)
   };
 
-  const movieNameChange = (e) => {
+  const inputRatingChange = (e) => {
     e.preventDefault();
-    movies.filter((item) =>
-      item.editStatus === true
-        ? setNameValue(item.movieName)
-        : setNameValue(e.target.value)
-    );
-  };
-
-  const movieRatingChange = (e) => {
-    e.preventDefault();
-    movies.filter((item) =>
-      item.editStatus === true
-        ? setRatingValue(item.rating)
-        : setRatingValue(Number(e.target.value))
-    );
+    setRatingValue(Number(e.target.value));
   };
 
   return (
     <div className="MoviesForm">
       <h3>Movies</h3>
-      <form onSubmit={addNewItem}>
+      <form onSubmit={submitForm}>
         <div className="form__inner">
           <div className="formInputWrapper">
             <TextField
               name="nameValue"
-              onChange={movieNameChange}
-              value={nameValue}
+              onChange={inputNameChange}
+              value={movies ? editNameValue : nameValue}
               placeholder="Input movie name"
             />
             <div className="rating__box">
@@ -60,8 +72,8 @@ export function MoviesForm() {
               <Rating
                 name="ratingValue"
                 size="small"
-                onChange={movieRatingChange}
-                value={ratingValue}
+                onChange={inputRatingChange}
+                value={movies ? editRatingValue : ratingValue}
               />
             </div>
           </div>

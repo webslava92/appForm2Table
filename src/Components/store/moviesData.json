@@ -3,35 +3,30 @@
     "id": 1,
     "movieName": "Video #1",
     "rating": 2,
-    "watched": true,
-    "editStatus": false
+    "watched": true
   },
   {
     "id": 2,
     "movieName": "Video #2",
     "rating": 4,
-    "watched": true,
-    "editStatus": false
+    "watched": true
   },
   {
     "id": 3,
     "movieName": "Video #3",
     "rating": 5,
-    "watched": false,
-    "editStatus": false
+    "watched": false
   },
   {
     "id": 4,
     "movieName": "Video #4",
     "rating": 1,
-    "watched": true,
-    "editStatus": false
+    "watched": true
   },
   {
     "id": 5,
     "movieName": "Video #5",
     "rating": 3,
-    "watched": false,
-    "editStatus": false
+    "watched": false
   }
 ]
