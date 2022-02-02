@@ -1,5 +1,9 @@
 import { React, useState, useEffect } from "react";
-import { editMovie, addNewMovie } from "../store/movieSlice";
+import {
+  getMovies,
+  changeMovie,
+  addNewMovie,
+} from "../../features/movies/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -11,53 +15,79 @@ export function MoviesForm() {
   const [ratingValue, setRatingValue] = useState(0);
   const [editNameValue, setEditNameValue] = useState("");
   const [editRatingValue, setEditRatingValue] = useState(0);
+  const [stateError, setStateError] = useState({
+    nameError: "",
+    submitError: "",
+  });
 
-  const movies = useSelector((state) =>
+  const editMovies = useSelector((state) =>
     state.movies.movies.find((item) => item.editStatus)
   );
-
-  useEffect(() => {
-    if (movies) {
-      setEditNameValue(movies.movieName);
-      setEditRatingValue(movies.rating);
-    }
-  }, [movies]);
-  
   const dispatch = useDispatch();
 
-  // console.log("name:", nameValue, "rating:", ratingValue);
-  // console.log("edit name:", editNameValue, "edit rating:", editRatingValue);
-  // console.log("movies:", movies);
-  // console.log("movies rating:", movies ? movies.rating : 0);
+  useEffect(() => {
+    dispatch(getMovies());
+  }, [dispatch]);
 
-  function submitForm (e) {
+  const validate = () => {
+    let nameError = "";
+    if (editNameValue ? !editNameValue : !nameValue) {
+      nameError = "Name cannot be blank";
+    }
+    if (nameError) {
+      setStateError({ nameError, submitError: "" });
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    if (editMovies) {
+      setEditNameValue(editMovies.movieName);
+      setEditRatingValue(editMovies.rating);
+    }
+  }, [editMovies]);
+
+  function editMovie() {
+    dispatch(
+      changeMovie({
+        id: editMovies.id,
+        movieName: editNameValue,
+        rating: editRatingValue,
+      })
+    );
+    setEditNameValue("");
+    setEditRatingValue(0);
+  }
+
+  function addMovie() {
+    dispatch(
+      addNewMovie({
+        movieName: nameValue,
+        rating: ratingValue,
+      })
+    );
+    setNameValue("");
+    setRatingValue(0);
+  }
+
+  function submitForm(e) {
     e.preventDefault();
-    if (movies) {
-      dispatch(
-        editMovie({
-          id: movies.id,
-          movieName: editNameValue,
-          rating: editRatingValue,
-        })
-      );
-      setEditNameValue("");
-      setEditRatingValue(0);
-    } else {
-      dispatch(
-        addNewMovie({
-          movieName: nameValue,
-          rating: ratingValue,
-        })
-      );
-      setNameValue("");
-      setRatingValue(0);
+    const isValid = validate();
+    if (isValid) {
+      if (editMovies) {
+        editMovie();
+      } else {
+        addMovie();
+      }
+      setStateError({ nameError: "", submitError: "" });
     }
   }
 
   const inputNameChange = (e) => {
     e.preventDefault();
     let value = e.target.value;
-    if (movies) {
+    if (editMovies) {
       setEditNameValue(value);
     } else {
       setNameValue(value);
@@ -67,7 +97,7 @@ export function MoviesForm() {
   const inputRatingChange = (e) => {
     e.preventDefault();
     let value = Number(e.target.value);
-    if (movies) {
+    if (editMovies) {
       setEditRatingValue(value);
     } else {
       setRatingValue(value);
@@ -83,22 +113,28 @@ export function MoviesForm() {
             <TextField
               name="nameValue"
               onChange={inputNameChange}
-              value={movies ? editNameValue : nameValue}
+              value={editMovies ? editNameValue : nameValue}
               placeholder="Input movie name"
             />
+            <div className="ErrorMessage">{stateError.nameError}</div>
             <div className="rating__box">
               <p>Choose a movie rating</p>
               <Rating
                 name="ratingValue"
                 size="small"
                 onChange={inputRatingChange}
-                value={movies ? editRatingValue : ratingValue}
+                value={editMovies ? editRatingValue : ratingValue}
               />
             </div>
           </div>
           <Button type="submit">Add Video</Button>
         </div>
       </form>
+      {stateError.submitError ? (
+        <h2 className="SubmitError">{stateError.submitError}</h2>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

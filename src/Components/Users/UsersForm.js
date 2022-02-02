@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "../axios";
+import UserApi from "../../common/apis/UserApi";
 import "../../App.css";
 import { getError } from "../respError";
 
@@ -37,7 +37,7 @@ export function UsersForm({
   const addUserDataAsync = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`/users`, {
+      const response = await UserApi.post(`/users`, {
         first_name: users.first_name,
         email: users.email,
       });
@@ -63,7 +63,7 @@ export function UsersForm({
   const editUserDataAsync = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.put(`/users`, {
+      const response = await UserApi.put(`/users`, {
         id: editData.id,
         first_name: editData.first_name,
         email: editData.email,

@@ -1,10 +1,24 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-import moviesData from "./moviesData.json";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import movieApi from "../../common/apis/MovieApi";
+
+export const getMovies = createAsyncThunk(
+  'movies/getMovies', 
+  async () => {
+    const response = await movieApi.get("/data");
+
+    const data = await response.data;
+    console.log(data);
+    return data;
+  }
+  
+);
 
 const movieSlice = createSlice({
   name: "movies",
   initialState: {
-    movies: moviesData,
+    movies: [],
+    status: null,
+    error: null,
   },
   reducers: {
     addNewMovie(state, action) {
@@ -17,19 +31,20 @@ const movieSlice = createSlice({
     },
 
     editMovieStatus(state, action) {
-      state.movies.map((movie) => movie.editStatus = false);
+      state.movies.map((movie) => (movie.editStatus = false));
       const editMovieStatus = state.movies.find(
         (movie) => movie.id === action.payload
       );
       editMovieStatus.editStatus = true;
     },
 
-    editMovie(state, action) {
+    changeMovie(state, action) {
       const editMovie = state.movies.find(
         (movie) => movie.id === action.payload.id
       );
       editMovie.movieName = action.payload.movieName;
       editMovie.rating = action.payload.rating;
+      editMovie.watched = editMovie.watched;
       editMovie.editStatus = false;
     },
 
@@ -48,8 +63,26 @@ const movieSlice = createSlice({
         : (watchedMovieStatus.watched = !watchedMovieStatus.watched);
     },
   },
+  extraRedusers: {
+    [getMovies.pending]: (state) => {
+      state.status = "loading"; 
+      state.error = null;
+    },
+    [getMovies.fulfilled]: (state, action) => {
+      state.status = "resolved";
+      state.movies = action.payload;
+    },
+    [getMovies.rejected]: (state, action) => {},
+  },
 });
 
-export const { addNewMovie, editMovieStatus, editMovie, removeMovie, watchedMovie } =
-  movieSlice.actions;
+
+
+export const {
+  addNewMovie,
+  editMovieStatus,
+  changeMovie,
+  removeMovie,
+  watchedMovie,
+} = movieSlice.actions;
 export default movieSlice.reducer;

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import { UsersForm } from "./Components/users/UsersForm";
 import { UsersTable } from "./Components/users/UsersTable";
-import axios from "./Components/axios";
+import UserApi from "./common/apis/UserApi";
 import { getError } from "./Components/respError";
 
 export function Users() {
@@ -27,7 +27,7 @@ export function Users() {
     setIsLoading(true);
     const getUsers = async () => {
       try {
-        const response = await axios.get(`/users?page=${paging.currentPage}`);
+        const response = await UserApi.get(`/users?page=${paging.currentPage}`);
         setIsLoading(false);
         if (response.data) {
           setUsers({
@@ -88,7 +88,7 @@ export function Users() {
   const removeUserDataAsync = async ({ id }) => {
     setIsLoading(true);
     try {
-      const response = await axios.delete(`/users/${id}`);
+      const response = await UserApi.delete(`/users/${id}`);
       if (response) {
         const reducedItems = users.items.filter((user) => {
           return user.id !== id;

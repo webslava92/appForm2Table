@@ -1,9 +1,9 @@
-import React from "react";
+import { React, useState } from "react";
 import {
   editMovieStatus,
   removeMovie,
   watchedMovie,
-} from "../store/movieSlice";
+} from "../../features/movies/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,12 +13,19 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import "../../App.css";
 
 export function Movie() {
+  const [selected, setSelected] = useState(null);
+
   const movies = useSelector((state) => state.movies.movies);
   const dispatch = useDispatch();
 
-
   return movies.map((item) => (
-    <tr key={item.id}>
+    <tr
+      key={item.id}
+      onClick={() =>
+        selected === item.id ? setSelected(null) : setSelected(item.id)
+      }
+      className={item.id === selected ? "user selected" : "user"}
+    >
       <td>{item.movieName}</td>
       <td>
         <Rating name="read-only" value={item.rating} size="small" readOnly />
