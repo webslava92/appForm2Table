@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from "react";
 import {
   getMovies,
-  changeMovie,
-  addNewMovie,
+  modifyMovie,
+  insertMovie,
 } from "../../features/movies/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
@@ -15,10 +15,7 @@ export function MoviesForm() {
   const [ratingValue, setRatingValue] = useState(0);
   const [editNameValue, setEditNameValue] = useState("");
   const [editRatingValue, setEditRatingValue] = useState(0);
-  const [stateError, setStateError] = useState({
-    nameError: "",
-    submitError: "",
-  });
+  const [inputError, setInputError] = useState("");
 
   const editMovies = useSelector((state) =>
     state.movies.movies.find((item) => item.editStatus)
@@ -30,12 +27,12 @@ export function MoviesForm() {
   }, [dispatch]);
 
   const validate = () => {
-    let nameError = "";
+    let inputError = "";
     if (editNameValue ? !editNameValue : !nameValue) {
-      nameError = "Name cannot be blank";
+      inputError = "Name cannot be blank";
     }
-    if (nameError) {
-      setStateError({ nameError, submitError: "" });
+    if (inputError) {
+      setInputError(inputError);
       return false;
     }
     return true;
@@ -50,7 +47,7 @@ export function MoviesForm() {
 
   function editMovie() {
     dispatch(
-      changeMovie({
+      modifyMovie({
         id: editMovies.id,
         movieName: editNameValue,
         rating: editRatingValue,
@@ -62,7 +59,7 @@ export function MoviesForm() {
 
   function addMovie() {
     dispatch(
-      addNewMovie({
+      insertMovie({
         movieName: nameValue,
         rating: ratingValue,
       })
@@ -80,7 +77,7 @@ export function MoviesForm() {
       } else {
         addMovie();
       }
-      setStateError({ nameError: "", submitError: "" });
+      setInputError("");
     }
   }
 
@@ -116,7 +113,7 @@ export function MoviesForm() {
               value={editMovies ? editNameValue : nameValue}
               placeholder="Input movie name"
             />
-            <div className="ErrorMessage">{stateError.nameError}</div>
+            <div className="ErrorMessage">{inputError}</div>
             <div className="rating__box">
               <p>Choose a movie rating</p>
               <Rating
@@ -130,11 +127,6 @@ export function MoviesForm() {
           <Button type="submit">Add Video</Button>
         </div>
       </form>
-      {stateError.submitError ? (
-        <h2 className="SubmitError">{stateError.submitError}</h2>
-      ) : (
-        ""
-      )}
     </div>
   );
 }

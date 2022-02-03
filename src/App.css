@@ -518,6 +518,12 @@ button.pagination__btn-next {
   }
 }
 
+@media (max-width: 420px) {
+  .rating__box p {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 350px) {
   .UsersTable td {
     font-size: 12px;

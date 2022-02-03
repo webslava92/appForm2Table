@@ -1,8 +1,8 @@
 import { React, useState } from "react";
 import {
-  editMovieStatus,
-  removeMovie,
-  watchedMovie,
+  selectEditMovie,
+  deleteMovie,
+  watchMovieStatus,
 } from "../../features/movies/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
@@ -45,19 +45,19 @@ export function Movie() {
           className={
             item.watched ? "movieWatched movieWatched--disable" : "movieWatched"
           }
-          onClick={() => dispatch(watchedMovie(item.id))}
+          onClick={() => dispatch(watchMovieStatus(item.id))}
         >
           <AddTaskIcon fontSize="small" />
         </button>
         <button
           className="movieEditBtn"
-          onClick={() => dispatch(editMovieStatus(item.id))}
+          onClick={() => dispatch(selectEditMovie(item.id))}
         >
           <BorderColorIcon fontSize="small" />
         </button>
         <button
           className="movieRemoveBtn"
-          onClick={() => dispatch(removeMovie(item.id))}
+          onClick={() => dispatch(deleteMovie(item.id))}
         >
           <DeleteForeverIcon fontSize="small" />
         </button>
